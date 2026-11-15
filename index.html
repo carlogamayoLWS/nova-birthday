@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#120A2A" />
+  <meta name="robots" content="noindex" />
+  <title>Happy Birthday, Nova Grace ✨</title>
+  <meta name="description" content="A little universe for Nova Grace Palmes, made with love by John Carlo Gamayo." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="is-locked">
+  <!-- ============ GLOBAL BACKGROUND ============ -->
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <div class="orbs" aria-hidden="true"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ============ SECTION 0: PASSCODE LOCK ============ -->
+  <div id="lock" class="lock" role="dialog" aria-modal="true" aria-labelledby="lockQ">
+    <div class="lock-inner">
+      <div class="lock-star" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg></div>
+      <p class="lock-intro">Before you come in, one little question.</p>
+      <h1 id="lockQ" class="lock-q">What's the date we met?</h1>
+      <div class="code-display" id="codeDisplay" aria-live="polite" aria-label="Entered digits">
+        <div class="code-group" data-label="MM"><span></span><span></span></div>
+        <span class="code-sep">/</span>
+        <div class="code-group" data-label="DD"><span></span><span></span></div>
+        <span class="code-sep">/</span>
+        <div class="code-group" data-label="YYYY"><span></span><span></span><span></span><span></span></div>
+      </div>
+      <p class="lock-hint" id="lockHint" aria-live="assertive"></p>
+      <div class="keypad" id="keypad">
+        <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button>
+        <button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button>
+        <button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button>
+        <button type="button" data-k="clear" class="k-soft" aria-label="Clear">Clear</button>
+        <button type="button" data-k="0">0</button>
+        <button type="button" data-k="back" class="k-soft" aria-label="Delete last digit"><svg viewBox="0 0 24 24"><path d="M21 5H8l-6 7 6 7h13a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1Zm-3.3 9.3-1.4 1.4L14 13.4l-2.3 2.3-1.4-1.4 2.3-2.3-2.3-2.3 1.4-1.4 2.3 2.3 2.3-2.3 1.4 1.4-2.3 2.3 2.3 2.3Z" fill="currentColor"/></svg></button>
+      </div>
+      <p class="lock-format">MM · DD · YYYY</p>
+    </div>
+  </div>
+
+  <!-- ============ NAV ============ -->
+  <header class="topbar" id="topbar">
+    <a href="#hero" class="brand"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg><span>Nova Grace</span></a>
+    <nav class="topnav" aria-label="Sections">
+      <a href="#hero">Home</a><a href="#story">Our Story</a><a href="#book">The Book</a><a href="#questions">Questions</a><a href="#reasons">Reasons</a><a href="#song-section">Our Song</a><a href="#gallery">Moments</a><a href="#wish">Wish</a><a href="#ask">Ask Me</a>
+    </nav>
+  </header>
+  <nav class="bottomnav" id="bottomnav" aria-label="Sections">
+    <a href="#hero" class="active"><svg viewBox="0 0 24 24"><path d="M12 3.2 3 10.4V20a1 1 0 0 0 1 1h5v-6h6v6h5a1 1 0 0 0 1-1v-9.6L12 3.2Z"/></svg><span>Home</span></a>
+    <a href="#story"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.5 3 5 6.4 5c2 0 3.4 1.1 4.1 2.3h3c.7-1.2 2.1-2.3 4.1-2.3C21 5 23.1 8.5 21.6 11.8 19.5 16.4 12 21 12 21Z" transform="translate(0 -1)"/></svg><span>Story</span></a>
+    <a href="#book"><svg viewBox="0 0 24 24"><path d="M3 5.5C5.5 4 8.6 4 12 6c3.4-2 6.5-2 9-.5V19c-2.5-1.4-5.6-1.4-9 .6-3.4-2-6.5-2-9-.6V5.5Zm8.2 1.9C8.7 6 6.6 5.9 4.6 6.6v10c2-.5 4.2-.3 6.6.9V7.4Z"/></svg><span>Book</span></a>
+    <a href="#song-section"><svg viewBox="0 0 24 24"><path d="M9 17.5V5.8l11-2.3v11.7a3 3 0 1 1-1.8-2.7V7.4L10.8 9v8.5a3 3 0 1 1-1.8-2.7V17.5Z"/></svg><span>Song</span></a>
+    <a href="#wish"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg><span>Wish</span></a>
+  </nav>
+
+  <!-- ============ MUSIC BUTTON ============ -->
+  <button type="button" class="music-btn" id="musicBtn" aria-label="Play music" aria-pressed="false">
+    <svg class="ic-on" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Zm-2.5-8.8v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6Z"/></svg>
+    <svg class="ic-off" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Zm16.6 3 2.1-2.1-1.4-1.4-2.1 2.1-2.1-2.1-1.4 1.4 2.1 2.1-2.1 2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4-2.1-2.1Z"/></svg>
+    <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
+  </button>
+  <audio id="songAudio" src="audio/good-evening-love.mp3" preload="metadata" loop></audio>
+
+  <main id="site" aria-hidden="true">
+    <!-- ============ SECTION 1: OPENING / COUNTDOWN ============ -->
+    <section id="hero" class="section hero">
+      <div class="hero-sky" aria-hidden="true"><span class="nova"></span></div>
+      <div class="hero-content">
+        <div class="hero-portrait asset" data-src="images/nova-portrait.jpg" data-alt="Nova Grace" data-optional="true"></div>
+        <p class="eyebrow hero-eyebrow">for Nova Grace Palmes</p>
+        <h1 class="hero-title"><span class="ht-line">Happy Birthday,</span><span class="ht-line ht-name">Nova Grace</span></h1>
+        <p class="hero-sub script">the brightest star in my sky</p>
+        <div class="countdown glass" id="countdown" hidden>
+          <p class="cd-text">Your day is almost here, Nova Grace.</p>
+          <div class="cd-grid">
+            <div><span id="cdD">00</span><small>days</small></div>
+            <div><span id="cdH">00</span><small>hours</small></div>
+            <div><span id="cdM">00</span><small>minutes</small></div>
+            <div><span id="cdS">00</span><small>seconds</small></div>
+          </div>
+        </div>
+        <a href="#story" class="scroll-cue" aria-label="Scroll down"><span>scroll</span><i></i></a>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 2: HOW IT STARTED ============ -->
+    <section id="story" class="section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Chapter one</p>
+        <h2 class="title reveal">Where it all began.</h2>
+        <div class="story-grid">
+          <div class="glass card story-card reveal float">
+            <p class="story-date"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg>January 24, 2025 · around 2 PM</p>
+            <p>We met on January 24, 2025, at around 2 PM. And if you want to know where, it was on TikTok, of all places.</p>
+            <p>Out of everyone who saved or hearted my content, you were the one I looked for. I went to your profile, and I was the one who messaged first. I even asked if you were also in IT, and boom, you were.</p>
+            <p class="script accent">Funny how a simple message can turn into the best part of my day.</p>
+          </div>
+          <figure class="shot reveal">
+            <div class="asset phone" data-src="images/screenshot-message.png" data-alt="One of your messages"></div>
+            <figcaption>One of your messages · January 30, 2025</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 3: FROM STREAK TO FRENNY (TIMELINE) ============ -->
+    <section id="timeline" class="section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Chapter two</p>
+        <h2 class="title reveal">From a streak to forever.</h2>
+        <ol class="timeline">
+          <li class="reveal"><span class="tl-dot"></span><div class="glass tl-card"><h3>The first message</h3><p class="tl-date">January 24, 2025</p><p>I messaged first, and we ended up talking about the tech stacks we both use.</p></div></li>
+          <li class="reveal"><span class="tl-dot"></span><div class="glass tl-card"><h3>Day 10 of our streak</h3><p class="tl-date">February 3, 2025</p><p>At first, the streak was the only thing we were protecting.</p>
+            <div class="asset phone small" data-src="images/screenshot-streak.png" data-alt="Day 10 of our streak"></div></div></li>
+          <li class="reveal"><span class="tl-dot"></span><div class="glass tl-card"><h3>Frenny season</h3><p class="tl-date">daily updates</p><p>Somewhere along the way, a friendship formed that neither of us expected, and we started calling each other “frenny.”</p></div></li>
+          <li class="reveal"><span class="tl-dot"></span><div class="glass tl-card"><h3>Mornings with His Word</h3><p class="tl-date">every morning</p><p>Before we ever talked about anything else, we were already talking about Him.</p></div></li>
+          <li class="reveal"><span class="tl-dot"></span><div class="glass tl-card"><h3>The scariest, best thing</h3><p class="tl-date">I told you</p><p>Looking back, it was the scariest thing I ever said, and the best decision I ever made.</p></div></li>
+          <li class="reveal"><span class="tl-dot glow"></span><div class="glass tl-card"><h3>Frenny turned to my whole world</h3><p class="tl-date">today, and every day after</p><p>Today, tomorrow, and for all the days after that.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 4: A THREEFOLD CORD ============ -->
+    <section id="verse" class="section verse">
+      <div class="wrap narrow center">
+        <div class="verse-star reveal" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg></div>
+        <blockquote class="verse-quote reveal">“And if one prevail against him, two shall withstand him; and a threefold cord is not quickly broken.”</blockquote>
+        <p class="verse-ref reveal">Ecclesiastes 4:12 (KJV)</p>
+        <p class="script verse-note reveal">Two of us, with Him in the middle.</p>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 5: THE BOOK ============ -->
+    <section id="book" class="section book-section">
+      <div class="wrap">
+        <p class="eyebrow reveal">A book by John Carlo Gamayo</p>
+        <h2 class="title reveal">Maybe You Never Asked</h2>
+        <p class="lead reveal">Answers to the questions you might never ask me.</p>
+
+        <div class="book-stage reveal" id="bookStage">
+          <!-- closed state -->
+          <button type="button" class="book-closed" id="bookClosed" aria-label="Open the book">
+            <span class="book-3d">
+              <span class="book-cover" id="bookCover"><span class="cover-loading"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg></span></span>
+              <span class="book-spine"></span>
+              <span class="book-pages-edge"></span>
+            </span>
+            <span class="tap-open"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg>Tap to open</span>
+          </button>
+
+          <!-- open state -->
+          <div class="book-open" id="bookOpen" hidden>
+            <div class="book-viewport" id="bookViewport">
+              <button type="button" class="book-arrow prev" id="bookArrowPrev" aria-label="Previous page"><svg viewBox="0 0 24 24"><path d="M15.4 5.4 14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg></button>
+              <div class="flip-holder" id="flipHolder"></div>
+              <button type="button" class="book-arrow next" id="bookArrowNext" aria-label="Next page"><svg viewBox="0 0 24 24"><path d="m8.6 18.6 1.4 1.4 8-8-8-8-1.4 1.4 6.6 6.6z"/></svg></button>
+              <div class="book-loading" id="bookLoading"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg><span id="bookLoadingText">Opening the book…</span></div>
+            </div>
+            <p class="page-indicator" id="pageIndicator" aria-live="polite">Page 1 of 23</p>
+            <div class="book-controls">
+              <button type="button" class="btn ghost" id="bookPrev">Previous</button>
+              <button type="button" class="btn ghost" id="bookFs">Fullscreen</button>
+              <button type="button" class="btn" id="bookNext">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 6: QUESTIONS (FLIP CARDS) ============ -->
+    <section id="questions" class="section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Tap a card</p>
+        <h2 class="title reveal">The questions you never asked.</h2>
+        <div class="flip-grid" id="flipGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 7: REASONS (STARS) ============ -->
+    <section id="reasons" class="section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Tap the stars</p>
+        <h2 class="title reveal">Reasons I love you.</h2>
+        <div class="sky-box glass reveal" id="skyBox">
+          <svg class="constellation" id="constellation" aria-hidden="true"></svg>
+          <div class="sky-stars" id="skyStars"></div>
+          <div class="reason-pop" id="reasonPop" aria-live="polite"><p id="reasonText">Every star holds a reason.</p><span id="reasonCount">0 of 12 found</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 8: OPEN WHEN (ENVELOPES) ============ -->
+    <section id="letters" class="section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Little letters</p>
+        <h2 class="title reveal">Open when…</h2>
+        <div class="env-grid" id="envGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 9: YOU KNOW WHAT'S BEAUTIFUL ============ -->
+    <section id="beautiful" class="section beautiful">
+      <div class="wrap narrow center">
+        <p class="b-q reveal">You know what’s beautiful?</p>
+        <p class="b-sub reveal">Read the first word.</p>
+        <p class="b-you" id="bYou">You.</p>
+        <p class="b-text reveal">Not just the way you look, though I would be lying if I said I never noticed. I mean the way you are genuine, the way you stay consistent, the way you cheer for the people you care about, and the way you pray for them.</p>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 10: OUR SONG ============ -->
+    <section id="song-section" class="section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Our song</p>
+        <h2 class="title reveal">Good Evening, Love</h2>
+        <div class="player glass reveal" id="player">
+          <div class="vinyl" id="vinyl"><div class="vinyl-label"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg></div></div>
+          <div class="player-body">
+            <p class="player-title">Good Evening, Love</p>
+            <p class="player-artist">written by John Carlo Gamayo, for Nova Grace</p>
+            <div class="progress" id="progress" role="slider" tabindex="0" aria-label="Song progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressFill"></span></div>
+            <div class="player-times"><span id="tCur">0:00</span><span id="tDur">--:--</span></div>
+            <button type="button" class="play-btn" id="playBtn" aria-label="Play song"><svg class="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+            <p class="player-note" id="playerNote" hidden>Add the song at <code>audio/good-evening-love.mp3</code> ✨</p>
+          </div>
+        </div>
+        <div class="lyrics glass reveal" id="lyrics"></div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 11: GALLERY ============ -->
+    <section id="gallery" class="section">
+      <div class="wrap">
+        <p class="eyebrow reveal">Polaroids</p>
+        <h2 class="title reveal">Our little moments.</h2>
+        <div class="gallery" id="galleryGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 12: PROMISES ============ -->
+    <section id="promises" class="section">
+      <div class="wrap narrow center">
+        <p class="eyebrow reveal">Always</p>
+        <h2 class="title reveal">My promises to you.</h2>
+        <ul class="promises" id="promiseList"></ul>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 13: MAKE A WISH ============ -->
+    <section id="wish" class="section wish">
+      <div class="wrap narrow center">
+        <h2 class="title reveal">Make a wish, Nova Grace.</h2>
+        <button type="button" class="wish-star" id="wishStar" aria-label="Tap or hold to make a wish">
+          <span class="ws-glow"></span>
+          <svg viewBox="0 0 100 100"><use href="#i-star4"/></svg>
+          <span class="ws-ring"></span>
+        </button>
+        <p class="wish-hint" id="wishHint">Tap or hold the star</p>
+        <div class="wish-after" id="wishAfter" aria-live="polite">
+          <p class="wa-1">Whatever you wished for, I'm praying for it too.</p>
+          <p class="wa-2 script">Happy birthday, my love.</p>
+        </div>
+      </div>
+      <div class="shooting" id="shooting" aria-hidden="true"></div>
+    </section>
+
+    <!-- ============ SECTION 14: ASK ME ANYWAY ============ -->
+    <section id="ask" class="section ask">
+      <div class="wrap narrow center">
+        <p class="ask-lead reveal">I wrote down the questions I thought you might never ask. But I'm sure there are more, and I want to hear every one.</p>
+        <h2 class="title reveal">So ask me anyway.</h2>
+        <form class="ask-form glass reveal" id="askForm">
+          <label for="askInput" class="sr-only">Your question</label>
+          <textarea id="askInput" rows="4" placeholder="Type your question here…" maxlength="1500"></textarea>
+          <button type="submit" class="btn glow-btn">Send to John Carlo <svg viewBox="0 0 24 24"><path d="M3 20.5 21.5 12 3 3.5 3 10l13 2-13 2z"/></svg></button>
+        </form>
+      </div>
+      <footer class="footer">
+        <span class="footer-star"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg></span>
+        <p>Made with love by John Carlo Gamayo, for Nova Grace Palmes.</p>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button type="button" class="lb-close" id="lbClose" aria-label="Close">✕</button>
+    <button type="button" class="lb-nav prev" id="lbPrev" aria-label="Previous photo"><svg viewBox="0 0 24 24"><path d="M15.4 5.4 14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg></button>
+    <figure class="lb-figure"><div class="lb-media" id="lbMedia"></div><figcaption id="lbCaption"></figcaption></figure>
+    <button type="button" class="lb-nav next" id="lbNext" aria-label="Next photo"><svg viewBox="0 0 24 24"><path d="m8.6 18.6 1.4 1.4 8-8-8-8-1.4 1.4 6.6 6.6z"/></svg></button>
+    <p class="lb-count" id="lbCount"></p>
+  </div>
+
+  <!-- Envelope letter modal -->
+  <div class="letter-modal" id="letterModal" hidden role="dialog" aria-modal="true" aria-labelledby="letterTitle">
+    <div class="letter-paper">
+      <button type="button" class="lb-close" id="letterClose" aria-label="Close letter">✕</button>
+      <p class="letter-when script" id="letterTitle"></p>
+      <div class="letter-body" id="letterBody"></div>
+      <p class="letter-sign script">— John Carlo</p>
+    </div>
+  </div>
+
+  <!-- SVG sprite -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-star4" viewBox="0 0 100 100"><path d="M50 0c3 28 22 47 50 50-28 3-47 22-50 50-3-28-22-47-50-50C28 47 47 28 50 0Z" fill="currentColor"/></symbol>
+  </svg>
+
+  <!-- Libraries (pinned) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

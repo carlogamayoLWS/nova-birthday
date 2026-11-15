@@ -1,1 +1,84 @@
-# nova-birthday
+# nova-birthday ✨
+
+A mobile-first, animated birthday website for **Nova Grace Palmes**, made with love by **John Carlo Gamayo**.
+It is a static site (plain HTML, CSS, and JavaScript, no build step), so it works on GitHub Pages as-is.
+
+```
+index.html              ← the whole single-page site
+css/style.css           ← design system + all styles (mobile first)
+js/main.js              ← CONFIG (top of file), site text, and all interactions
+book/maybe-you-never-asked.pdf   ← the book shown as the realistic flipbook
+images/                 ← drop photos & screenshots here
+audio/                  ← drop the song here
+```
+
+## 1. Edit the settings (CONFIG)
+
+Open `js/main.js`. The very first thing in the file is the `CONFIG` object:
+
+```js
+const CONFIG = {
+  BIRTHDAY_DATE: "2026-12-31",          // ⚠️ change to her real birthday, format YYYY-MM-DD
+  PASSCODE: "01242025",                 // lock-screen code (MMDDYYYY) = January 24, 2025
+  MY_EMAIL: "your-email@example.com",   // ⚠️ your email, used by "Send to John Carlo"
+  ...
+  GALLERY_CAPTIONS: ["", "", ...],      // optional captions for photo-01 … photo-12
+};
+```
+
+- **BIRTHDAY_DATE**: before this date the hero shows a live countdown ("Your day is almost here, Nova Grace."). On the day and after, the countdown is skipped and a confetti burst plays when she enters.
+- **PASSCODE**: the 8-digit code for the lock screen.
+- **MY_EMAIL**: the address her question is sent to (it opens her mail app with the subject "A question for you ✨").
+- **GALLERY_CAPTIONS**: captions for the 12 polaroids. Empty ones show "Add a caption", and she can also tap a caption to write her own (saved on her device).
+
+All other text on the site (flip cards, reasons, letters, lyrics, promises) is in the `CONTENT` object right below `CONFIG`.
+
+## 2. Where to put your files
+
+Use these exact file names. Anything missing shows a soft purple placeholder frame with a star, never a broken image.
+
+| File | Used in |
+|---|---|
+| `book/maybe-you-never-asked.pdf` | Section 5, the flipbook (already included) |
+| `images/photo-01.jpg` … `images/photo-12.jpg` | Our little moments (gallery) |
+| `images/nova-portrait.jpg` | Optional round portrait in the hero |
+| `images/screenshot-message.png` | "Where it all began" (her message, January 30, 2025) |
+| `images/screenshot-streak.png` | Timeline: Day 10 of our streak |
+| `audio/good-evening-love.mp3` | The song (music button and the Our Song player) |
+
+Photos can be any size; they are cropped to fit. Square-ish photos look best in the polaroids. To use a different book, replace the PDF with one of the same name (any page count works).
+
+## 3. Run it locally
+
+The book is rendered with PDF.js, which **does not work when you double-click `index.html`** (browsers block `file://` loading). Start a tiny local server in this folder instead:
+
+```bash
+# option A (Python, usually already installed)
+python3 -m http.server 8000
+# then open http://localhost:8000
+
+# option B (Node.js)
+npx serve .
+```
+
+To test on your phone, connect it to the same Wi-Fi and open `http://<your-computer-ip>:8000`.
+
+## 4. Put it online with GitHub Pages
+
+1. Push this repository to GitHub (it's already here).
+2. On GitHub, open the repo → **Settings** → **Pages**.
+3. Under **Build and deployment**, choose **Source: Deploy from a branch**, branch **main**, folder **/ (root)**, then **Save**.
+4. After a minute the site is live at `https://<your-username>.github.io/nova-birthday/`.
+
+GitHub Pages for a private repository needs a paid GitHub plan; on the free plan, keep the repo public.
+Note: on a public site anyone with the link can see the files. The passcode is a sweet gate, not real security.
+
+## Tech
+
+- GSAP 3.12.5 + ScrollTrigger (scroll animations)
+- canvas-confetti 1.9.3
+- PDF.js 3.11.174 (renders each book page)
+- StPageFlip (`page-flip` 2.0.7) for the realistic page turns, with a custom 3D CSS page-turn fallback if it fails to load
+- Google Fonts: Cormorant Garamond, Inter, Caveat
+
+All libraries load from CDNs with pinned versions. The site respects `prefers-reduced-motion`, uses `100dvh` and safe-area insets, and has a floating bottom nav on phones and a top bar on desktop.
