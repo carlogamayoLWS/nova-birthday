@@ -26,67 +26,139 @@ const CONFIG = {
   // She can also tap a caption on the site to write her own (saved on her device).
   GALLERY_CAPTIONS: ["", "", "", "", "", "", "", "", "", "", "", ""],
 
+  // Soft paper sound when a book page turns (true / false).
+  PAGE_TURN_SOUND: true,
+
   // Remember the unlock for this browser tab session (so a refresh doesn't re-lock).
   REMEMBER_UNLOCK: true,
 };
 
 /* ---------------------------- SITE CONTENT ----------------------------- */
 const CONTENT = {
+  // Section 4 — timeline. "head — text". photo: image shown in the card's photo slot.
+  timeline: [
+    { head: "January 24, 2025 · around 2 PM", text: "The first message. Out of everyone who saved or hearted my content on TikTok, you were the one I looked for. I messaged first.", photo: "images/photo-01.jpg" },
+    { head: "Are you in IT?", text: "You were. Boom. We ended up talking about the tech stacks we both use.", photo: "images/photo-02.jpg" },
+    { head: "The streak begins", text: "The conversation stayed consistent until, unexpectedly, we had a streak.", shot: "images/screenshot-streak.png", caption: "Day 10 of our streak · February 3, 2025" },
+    { head: "The frenny season", text: "Daily updates about our days. You were so genuine and so supportive. That is when I knew you were different.", shot: "images/screenshot-message.png", caption: "One of your messages · January 30, 2025" },
+    { head: "Our mornings with God", text: "Every morning we shared our daily devotion. His Word became the foundation of our friendship.", photo: "images/photo-03.jpg" },
+    { head: "The day I told you", text: "I was so nervous. I prayed for courage. And after I told you, we only grew closer.", photo: "images/photo-04.jpg" },
+    { head: "Today", text: "From frenny to love. Happy birthday, Nova Grace.", photo: "images/photo-05.jpg" },
+  ],
+  // Section 6 — tap-to-reveal cards
   questions: [
-    { q: "When and where did we meet?", a: "We met on January 24, 2025, at around 2 PM. And if you want to know where, it was on TikTok, of all places.", page: 2 },
-    { q: "Can I eat that love?", a: "So no, you can't eat it. But somehow, love still nourishes you in a different way.", page: 6 },
-    { q: "Did you ever fall in love with me before?", a: "So yes, I did. I fell in love with you back then, and I would choose you all over again.", page: 7 },
-    { q: "Do you only see me as a friend?", a: "At first, yes. But as time went by, I couldn’t hide it anymore. I had fallen for you too.", page: 8 },
-    { q: "What brought us closer?", a: "For me, it was God.", page: 9 },
-    { q: "What if the day comes that you get tired of me?", a: "I will never be tired of you. You are not the weight I carry, you are one of the reasons I keep going.", page: 11 },
-    { q: "Until when will you choose me?", a: "For life.", page: 12 },
-    { q: "What if I’m not perfect?", a: "Good, because neither am I.", page: 16 },
-    { q: "What do I mean to you?", a: "You mean more than I know how to write in a book. But I tried anyway, and every page of this is for you.", page: 17 },
+    ["When and where did we meet?", "January 24, 2025, around 2 PM, on TikTok. Out of everyone who saved or hearted my content, you were the one I looked for."],
+    ["How did you value me during our frenny season?", "Through our daily updates, I saw how genuine you are. We were so consistent, and so supportive of each other."],
+    ["Can I eat that love?", "No, but true love still nourishes you. It helps you grow, understand more, and become a better version of yourself."],
+    ["Did you ever fall in love with me before?", "I liked you first. After a month of really knowing you, I knew I had fallen in love. And I would choose you all over again."],
+    ["Do you only see me as a friend?", "At first, yes. But I could not hide it anymore. I prayed for the courage to tell you, and after I did, we only grew closer."],
+    ["What brought us closer?", "God. Our mornings with His Word became our foundation."],
+    ["You know what's beautiful?", "Read the first word. You."],
+    ["What if the day comes that you get tired of me?", "Nobody is getting tired. I will buy us energy drinks. And seriously, I will never be tired of you."],
+    ["Until when will you choose me?", "For life. Today, tomorrow, and for all the days after that."],
+    ["What's your plan for us?", "I will love you until my last breath, build a family with you, and keep growing closer to God together."],
+    ["Are you afraid of losing me?", "A little. That is how much you matter to me. And I will keep doing the work."],
+    ["What do you pray for when it comes to me?", "That God keeps you safe, gives you strength on tired days, and peace when your mind is heavy, and that He keeps us close to Him and to each other."],
+    ["What if I'm not perfect?", "Good, because neither am I. I am not looking for a perfect love. I am looking for a true one."],
+    ["What do I mean to you?", "A stranger on TikTok, then my frenny, then the person I love."],
+    ["What made you stay?", "Not one big moment, but a lot of small ones."],
+    ["What are you most grateful for about us?", "That a simple message found its way to you, that we began with God, and that you did not pull away."],
+    ["What do you promise me?", "To choose you on easy days and hard days, to tell the truth, to pray for us, and to keep making you laugh."],
+    ["How do you picture us when we're old?", "Still sending updates, still opening His Word together, and still choosing each other every day."],
+    ["What do you want me to never forget?", "That you are loved, chosen, not alone, and enough."],
   ],
+  // Section 7 — catch the stars
   reasons: [
-    "The way you are genuine.",
-    "The way you stay consistent, on busy days and on tired days.",
-    "The way you cheer for the people you care about.",
-    "The way you pray for them.",
-    "You shared your day with me, even when we were only frenny.",
-    "You never made me feel like I was just another name in your inbox.",
-    "You made me feel like I mattered.",
-    "Every morning, we opened His Word together.",
-    "When I told you the truth, you didn’t pull away.",
-    "You are my peace on loud days.",
-    "You are my reason to smile on quiet ones.",
-    "You are real, with your tired days, your confusing days, and your quiet days.",
+    "You are genuine. What I see is what I get, and it is beautiful.",
+    "You are consistent. You show up, day after day.",
+    "You are supportive. You cheer for the people you care about.",
+    "You pray for me. Even during my capstone journey, you prayed for me and my group.",
+    "You stayed after I told you how I felt. That meant everything.",
+    "You made our mornings about God.",
+    "You make even small updates feel special.",
+    "You are one of the reasons I keep going.",
   ],
+  // Section 8 — open when...
   letters: [
-    { when: "Open when you feel tired", body: [
-      "Life will make us tired. Work, long days, and heavy weeks will take something out of us. But I will never be tired of you.",
-      "And if one day you are the one who feels tired, then we rest. We slow down, we breathe, and we take it one day at a time, together.",
-      "Just keep the energy drinks on standby." ] },
-    { when: "Open when you miss me", body: [
-      "Send me an update, even if it is only a simple “good evening, frenny.”",
-      "You are the first one I want to tell about my day, the good parts and the hard parts." ] },
-    { when: "Open when you forget you are loved", body: [
-      "That you are loved, on the days you feel it and on the days you don’t.",
-      "That you are chosen. Not by accident, not out of convenience, but on purpose, and again and again.",
-      "That you are not alone, whatever season you are in. And that you are enough, exactly as you are." ] },
-    { when: "Open when you feel you’re not enough", body: [
-      "I never chose you because you are perfect. I chose you because you are real.",
-      "I am not looking for a perfect love. I am looking for a true one, and I found it in you." ] },
-    { when: "Open when you need a prayer", body: [
-      "I pray that God keeps you safe and gives you strength on your tired days. I pray for peace when your mind is heavy, and for joy in the small things. I pray that He guards your heart, and ours.",
-      "Most of all, I pray that we keep growing closer to Him, and that He keeps us close to each other." ] },
-    { when: "Open on your birthday", body: [
-      "Happy birthday, Nova Grace.",
-      "You started as a message from a stranger on TikTok. Then you became my frenny. Then you became the person I love.",
-      "Today, tomorrow, and for all the days after that, you will still be the one I choose." ] },
+    { when: "Open when you're tired", body: "Rest. You do not have to carry everything today. I'm here, and I'm proud of you. We can slow down, breathe, and take it one day at a time, together." },
+    { when: "Open when you doubt yourself", body: "You are loved, you are chosen, and you are enough, exactly as you are. Don't let one hard day tell you otherwise." },
+    { when: "Open when you miss me", body: "Good evening, love. I'm right here. Send me an update, I would love to hear about your day." },
+    { when: "Open when you can't sleep", body: "Let it go for tonight. Pray, breathe, and leave the rest to Him. Tomorrow will be kind to you." },
+    { when: "Open when you're happy", body: "Then I'm happy too! Tell me everything. I want to celebrate with you." },
+    { when: "Open when you need a verse", body: "The LORD bless thee, and keep thee: The LORD make his face shine upon thee, and be gracious unto thee: The LORD lift up his countenance upon thee, and give thee peace. (Numbers 6:24-26, KJV)" },
   ],
-  // Song lyrics: [section label, lines...]
-  lyrics: [
-    ["Pre-Chorus", "Frenny was the name before,", "Now love is the word I'm living for,", "And that little flame on that little screen", "Was the start of everything."],
-    ["Bridge", "So if you ask me how long, I'll say for life,", "Through the heavy seasons, through the quiet nights,", "Through the days you're lost, through the days you're tired,", "I will choose you, again and again.", "And you know what's beautiful?", "Read the first word.", "You."],
-    ["Final Chorus", "Good evening, love, good evening, love,", "Frenny turned to my whole world, my everything.", "Nova Grace, my star, my prayer, my plan,", "I'll hold your hand as long as I can.", "Maybe you never asked, but I answered anyway,", "I'll choose you, love, every single day."],
-    ["Outro", "Maybe you never asked,", "So I wrote it all down.", "Good evening, love."],
+  // Section 9 — verses (KJV)
+  verses: [
+    { text: "And if one prevail against him, two shall withstand him; and a threefold cord is not quickly broken.", ref: "Ecclesiastes 4:12 KJV", note: "Two of us, with Him in the middle." },
+    { text: "Commit thy works unto the LORD, and thy thoughts shall be established.", ref: "Proverbs 16:3 KJV", note: "Every plan starts with Him." },
+    { text: "In every thing give thanks: for this is the will of God in Christ Jesus concerning you.", ref: "1 Thessalonians 5:18 KJV", note: "And so, in every thing, I thank Him for you." },
+    { text: "The LORD bless thee, and keep thee: The LORD make his face shine upon thee, and be gracious unto thee: The LORD lift up his countenance upon thee, and give thee peace.", ref: "Numbers 6:24-26 KJV", note: "My birthday prayer for you." },
   ],
+  // Section 10 — complete lyrics. "[Chorus - repeat]" repeats the Chorus lines.
+  lyrics: `[Verse 1]
+Friday afternoon, around two,
+I sent a message to someone new.
+Out of all the hearts that came and went,
+You were the one I meant.
+"Are you in IT?" I typed with a grin,
+"I am," you said, and the talk poured in,
+Tech stacks and tools, and the day went by,
+Then a tiny flame lit up our night.
+
+[Pre-Chorus]
+Frenny was all that we said,
+Just good evenings and the words we read,
+But a little flame on a little screen
+Was holding the best thing I've ever seen.
+
+[Chorus]
+Good evening, love, good evening, love,
+Once you were frenny, now you're all I'm thinking of.
+Nova, a new star lighting up my sky,
+Grace, a gift from God, and I don't need to ask why.
+Maybe you never asked, so I'll say it right now:
+I fell in love with you, and I'll show you how.
+
+[Verse 2]
+Every morning, we opened the Word,
+Two voices sharing what we heard,
+Nobody told us where to start,
+But He built the floor beneath our hearts.
+I asked Him, "Lord, is this real, or just a phase?"
+He answered me through all our days.
+I prayed for courage, my heart was racing,
+I braced myself for you to go,
+But you stayed, and love began to grow.
+
+[Pre-Chorus]
+Frenny was the name before,
+Now love is the word I'm living for,
+And that little flame on that little screen
+Was the start of everything.
+
+[Chorus - repeat]
+
+[Bridge]
+So if you ask me how long, I'll say for life,
+Through the heavy seasons, through the quiet nights,
+Through the days you're lost, through the days you're tired,
+I will choose you, again and again.
+And you know what's beautiful?
+Read the first word.
+You.
+
+[Final Chorus]
+Good evening, love, good evening, love,
+Frenny turned to my whole world, my everything.
+Nova Grace, my star, my prayer, my plan,
+I'll hold your hand as long as I can.
+Maybe you never asked, but I answered anyway,
+I'll choose you, love, every single day.
+
+[Outro]
+Maybe you never asked,
+So I wrote it all down.
+Good evening, love.`,
   promises: [
     "I promise to choose you on the easy days and on the hard ones.",
     "I promise to tell you the truth, even when it is uncomfortable.",
@@ -202,9 +274,8 @@ const CONTENT = {
   /* ============================ ASSET LOADER ============================ */
   function initAsset(el) {
     const src = el.dataset.src;
-    const label = src.split("/").pop();
     if (!el.querySelector(".ph")) {
-      el.insertAdjacentHTML("beforeend", `<div class="ph">${STAR}${el.dataset.optional ? "" : `<small>${label}</small>`}</div>`);
+      el.insertAdjacentHTML("beforeend", `<div class="ph">${STAR}</div>`);
     }
     const img = new Image();
     img.alt = el.dataset.alt || "";
@@ -263,7 +334,7 @@ const CONTENT = {
 
   /* =============================== AUDIO ================================ */
   const Audio = (() => {
-    const a = $("#songAudio"), btn = $("#musicBtn"), play = $("#playBtn"), vinyl = $("#vinyl"), note = $("#playerNote");
+    const a = $("#songAudio"), btn = $("#musicBtn"), play = $("#playBtn"), vinyl = $("#vinyl");
     const fill = $("#progressFill"), bar = $("#progress"), tc = $("#tCur"), td = $("#tDur");
     let missing = false;
     const fmt = (s) => (isFinite(s) ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}` : "--:--");
@@ -273,13 +344,13 @@ const CONTENT = {
       play.classList.toggle("playing", on); play.setAttribute("aria-label", on ? "Pause song" : "Play song");
       vinyl.classList.toggle("spinning", on);
     }
-    function markMissing() { missing = true; note.hidden = false; sync(); }
+    function markMissing() { missing = true; btn.classList.add("no-audio"); play.classList.add("no-audio"); sync(); }
     a.addEventListener("error", markMissing);
     a.addEventListener("play", sync); a.addEventListener("pause", sync);
     a.addEventListener("loadedmetadata", () => (td.textContent = fmt(a.duration)));
     a.addEventListener("timeupdate", () => { const p = a.duration ? (a.currentTime / a.duration) * 100 : 0; fill.style.width = p + "%"; bar.setAttribute("aria-valuenow", Math.round(p)); tc.textContent = fmt(a.currentTime); });
     function toggle() {
-      if (missing) { note.hidden = false; btn.animate?.([{ transform: "translateX(0)" }, { transform: "translateX(-4px)" }, { transform: "translateX(4px)" }, { transform: "translateX(0)" }], { duration: 300 }); return; }
+      if (missing) { btn.animate?.([{ transform: "translateX(0)" }, { transform: "translateX(-4px)" }, { transform: "translateX(4px)" }, { transform: "translateX(0)" }], { duration: 300 }); return; }
       if (a.paused) a.play().catch(() => {}); else a.pause();
     }
     btn.addEventListener("click", toggle); play.addEventListener("click", toggle);
@@ -316,12 +387,11 @@ const CONTENT = {
     if (!hasGSAP || reduceMotion || !animated) { window.gsap?.set?.(".nova", { opacity: 0.9, scale: 1 }); setTimeout(after, 300); return; }
     Starfield.revealOneByOne();
     const tl = gsap.timeline({ delay: 0.2 });
-    tl.set([".hero-portrait", ".hero-eyebrow", ".ht-line", ".hero-sub", "#countdown", ".scroll-cue"], { opacity: 0, y: 26 })
+    tl.set([".hero-portrait", ".ht-line", ".hero-sub", "#countdown", ".scroll-cue"], { opacity: 0, y: 26 })
       .to(".nova", { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" }, 1.6)
       .to(".nova", { scale: 3.4, duration: 0.5, ease: "power2.in" }, 2.2)
       .to(".nova", { scale: 1, opacity: 0.85, duration: 1.2, ease: "power3.out" }, 2.7)
       .to(".hero-portrait", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 2.6)
-      .to(".hero-eyebrow", { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 2.8)
       .to(".ht-line", { opacity: 1, y: 0, duration: 1.1, stagger: 0.25, ease: "power3.out" }, 2.95)
       .to(".hero-sub", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 3.5)
       .to("#countdown", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 3.7)
@@ -348,7 +418,18 @@ const CONTENT = {
     });
     gsap.to(".hero-content", { yPercent: 18, opacity: 0.25, ease: "none", scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: true } });
     gsap.to(".nova", { y: -80, ease: "none", scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: true } });
-    gsap.fromTo("#bYou", { opacity: 0, scale: 0.6, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.6, ease: "power3.out", scrollTrigger: { trigger: "#bYou", start: "top 82%", once: true } });
+    // Section 2: the two name cards slide in from opposite sides
+    gsap.utils.toArray(".name-card").forEach((c, i) => { c.classList.remove("reveal"); gsap.fromTo(c, { opacity: 0, x: i ? 40 : -40, y: 20 }, { opacity: 1, x: 0, y: 0, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: c, start: "top 88%", once: true } }); });
+    // Section 4: glowing line draws as you scroll; each star node lights up and reveals its card
+    gsap.fromTo("#timelineList", { "--line": 0 }, { "--line": 1, ease: "none", scrollTrigger: { trigger: "#timelineList", start: "top 70%", end: "bottom 60%", scrub: true } });
+    gsap.utils.toArray(".tl-item").forEach((li) => {
+      const card = li.querySelector(".tl-card"), node = li.querySelector(".tl-node");
+      gsap.set(card, { opacity: 0, y: 40 }); gsap.set(node, { scale: 0.3, opacity: 0.4 });
+      ScrollTrigger.create({ trigger: li, start: "top 82%", once: true, onEnter: () => {
+        gsap.to(node, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(2)" }); li.classList.add("lit");
+        gsap.to(card, { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.1 });
+      } });
+    });
     gsap.utils.toArray(".polaroid").forEach((p, i) => gsap.from(p, { opacity: 0, y: 50, rotate: 0, duration: 0.9, delay: (i % 4) * 0.08, ease: "power3.out", scrollTrigger: { trigger: p, start: "top 94%", once: true } }));
     gsap.utils.toArray(".qcard").forEach((p, i) => gsap.from(p, { opacity: 0, y: 40, duration: 0.9, delay: (i % 3) * 0.1, ease: "power3.out", scrollTrigger: { trigger: p, start: "top 92%", once: true } }));
     gsap.utils.toArray(".envelope").forEach((p, i) => gsap.from(p, { opacity: 0, y: 40, rotate: i % 2 ? 4 : -4, duration: 0.9, delay: (i % 3) * 0.1, ease: "back.out(1.4)", scrollTrigger: { trigger: p, start: "top 94%", once: true } }));
@@ -356,8 +437,8 @@ const CONTENT = {
 
   /* ================================ NAV ================================= */
   function initNav() {
-    const groups = { hero: "hero", story: "story", timeline: "story", verse: "story", book: "book", questions: "book", reasons: "book", letters: "book", beautiful: "book", "song-section": "song-section", gallery: "song-section", promises: "song-section", wish: "wish", ask: "wish" };
-    const topMap = { hero: "hero", story: "story", timeline: "story", verse: "story", book: "book", questions: "questions", reasons: "reasons", letters: "reasons", beautiful: "reasons", "song-section": "song-section", gallery: "gallery", promises: "gallery", wish: "wish", ask: "ask" };
+    const groups = { hero: "hero", name: "hero", letter: "story", story: "story", book: "book", questions: "book", reasons: "book", openwhen: "book", verses: "song-section", "song-section": "song-section", gallery: "song-section", promises: "song-section", wish: "wish", ask: "wish" };
+    const topMap = { hero: "hero", name: "hero", letter: "letter", story: "story", book: "book", questions: "questions", reasons: "reasons", openwhen: "reasons", verses: "song-section", "song-section": "song-section", gallery: "gallery", promises: "gallery", wish: "wish", ask: "ask" };
     const io = new IntersectionObserver((ents) => {
       ents.forEach((en) => {
         if (!en.isIntersecting) return;
@@ -369,55 +450,121 @@ const CONTENT = {
     $$("main .section").forEach((s) => io.observe(s));
   }
 
-  /* ============================= FLIP CARDS ============================= */
+  /* ============================ SPARKLE FX ============================== */
+  function sparkleAt(el, n = 10) {
+    if (reduceMotion) return;
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    for (let i = 0; i < n; i++) {
+      const s = document.createElement("span");
+      s.className = "sparkle"; s.innerHTML = STAR;
+      s.style.left = cx + "px"; s.style.top = cy + "px";
+      document.body.appendChild(s);
+      const ang = (Math.PI * 2 * i) / n + Math.random() * 0.5, dist = 40 + Math.random() * 50;
+      const anim = s.animate([
+        { transform: "translate(-50%,-50%) scale(.2)", opacity: 1 },
+        { transform: `translate(calc(-50% + ${Math.cos(ang) * dist}px), calc(-50% + ${Math.sin(ang) * dist}px)) scale(${0.6 + Math.random() * 0.6}) rotate(90deg)`, opacity: 0 },
+      ], { duration: 700 + Math.random() * 400, easing: "cubic-bezier(.2,.8,.3,1)" });
+      anim.onfinish = () => s.remove();
+    }
+  }
+
+  /* ============================= SECTION 3 ============================== */
+  function initLetter() {
+    const card = $("#blCard"), seal = $("#blSeal"), paper = $("#blPaper");
+    const paras = $$("p", paper);
+    seal.addEventListener("click", () => {
+      if (card.classList.contains("open")) return;
+      card.classList.add("open");
+      sparkleAt(seal, 12);
+      if (hasGSAP && !reduceMotion) {
+        gsap.fromTo(paras, { opacity: 0, y: 14, filter: "blur(4px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1, stagger: 0.55, ease: "power2.out", delay: 0.7, onComplete: () => hasST && ScrollTrigger.refresh() });
+      } else paras.forEach((p) => (p.style.opacity = 1));
+      setTimeout(() => hasST && ScrollTrigger.refresh(), 900);
+    });
+  }
+
+  /* ============================= SECTION 4 ============================== */
+  function initTimeline() {
+    $("#timelineList").innerHTML = CONTENT.timeline.map((t, i) => `
+      <li class="tl-item">
+        <span class="tl-node">${STAR}</span>
+        <div class="glass tl-card">
+          ${t.shot
+            ? `<figure class="tl-shot"><div class="asset phone" data-src="${t.shot}" data-alt="${t.caption}"></div><figcaption>${t.caption}</figcaption></figure>`
+            : `<div class="asset tl-photo" data-src="${t.photo}" data-alt=""></div>`}
+          <h3>${t.head}</h3>
+          <p>${t.text}</p>
+        </div>
+      </li>`).join("");
+    $$("#timelineList .asset").forEach(initAsset);
+  }
+
+  /* ============================= SECTION 6 ============================== */
   function initQuestions() {
-    const grid = $("#flipGrid");
-    grid.innerHTML = CONTENT.questions.map((c, i) => `
-      <button type="button" class="qcard" aria-pressed="false" aria-label="${c.q} Tap to see my answer">
+    const grid = $("#flipGrid"), prog = $("#qProgress"), done = $("#qDone");
+    const total = CONTENT.questions.length, opened = new Set();
+    grid.innerHTML = CONTENT.questions.map(([q, a], i) => `
+      <button type="button" class="qcard" data-i="${i}" aria-pressed="false" aria-label="${q.replace(/"/g, "&quot;")}">
         <span class="qcard-inner">
-          <span class="qface qfront"><span class="q-num">No. ${String(i + 1).padStart(2, "0")}</span><span class="q-title">${c.q}</span><span class="q-tap">${STAR}tap to flip</span></span>
-          <span class="qface qback"><span class="q-ans">${c.a}</span><span class="q-sm">from page ${c.page} of the book</span></span>
+          <span class="qface qfront"><span class="q-num">${i + 1}</span><span class="q-title">${q}</span><span class="q-star">${STAR}</span></span>
+          <span class="qface qback"><span class="q-ans">${a}</span></span>
         </span>
       </button>`).join("");
-    grid.addEventListener("click", (e) => { const c = e.target.closest(".qcard"); if (!c) return; c.classList.toggle("flipped"); c.setAttribute("aria-pressed", c.classList.contains("flipped")); });
-  }
-
-  /* ============================== REASONS =============================== */
-  function initReasons() {
-    const box = $("#skyStars"), svg = $("#constellation"), txt = $("#reasonText"), cnt = $("#reasonCount");
-    // hand-placed constellation (percent positions) — a gentle heart-ish shape
-    const pts = [[50, 22], [36, 12], [20, 18], [12, 36], [20, 56], [34, 72], [50, 88], [66, 72], [80, 56], [88, 36], [80, 18], [64, 12]];
-    const found = new Set();
-    box.innerHTML = pts.map((p, i) => `<button type="button" class="sky-star" style="left:${p[0]}%;top:${p[1]}%" data-i="${i}" aria-label="Star ${i + 1}">${STAR}</button>`).join("");
-    function drawLines() {
-      const r = box.getBoundingClientRect(), r0 = svg.getBoundingClientRect();
-      const order = [...found].sort((a, b) => a - b);
-      let html = "";
-      for (let k = 0; k < pts.length; k++) {
-        const a = k, b = (k + 1) % pts.length;
-        if (found.has(a) && found.has(b)) html += `<line x1="${(pts[a][0] / 100) * r.width + r.left - r0.left}" y1="${(pts[a][1] / 100) * r.height + r.top - r0.top}" x2="${(pts[b][0] / 100) * r.width + r.left - r0.left}" y2="${(pts[b][1] / 100) * r.height + r.top - r0.top}"/>`;
+    grid.addEventListener("click", (e) => {
+      const c = e.target.closest(".qcard"); if (!c) return;
+      const on = c.classList.toggle("flipped");
+      c.setAttribute("aria-pressed", on);
+      if (on) sparkleAt(c, 9);
+      const i = +c.dataset.i;
+      if (!opened.has(i)) {
+        opened.add(i);
+        prog.textContent = `${opened.size} of ${total} opened`;
+        if (opened.size === total) {
+          done.classList.add("show");
+          if (typeof confetti === "function") confetti({ particleCount: 80, spread: 90, shapes: ["star", "circle"], colors: PALETTE, origin: { y: 0.6 }, disableForReducedMotion: true, zIndex: 90 });
+          sparkleAt(prog, 14);
+        }
       }
-      svg.innerHTML = html; return order;
-    }
-    box.addEventListener("click", (e) => {
-      const b = e.target.closest(".sky-star"); if (!b) return;
-      const i = +b.dataset.i; found.add(i);
-      $$(".sky-star", box).forEach((s) => s.classList.remove("active"));
-      b.classList.add("found", "active");
-      if (hasGSAP && !reduceMotion) gsap.fromTo(txt, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5 });
-      txt.textContent = CONTENT.reasons[i];
-      cnt.textContent = found.size === pts.length ? "All 12 found. And there are countless more." : `${found.size} of ${pts.length} found`;
-      drawLines();
-      if (found.size === pts.length) { Starfield.shoot(); if (typeof confetti === "function") { const r = b.getBoundingClientRect(); confetti({ particleCount: 50, spread: 80, shapes: ["star"], colors: ["#FFD98E", "#FFF6E9"], origin: { x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight }, disableForReducedMotion: true, zIndex: 90 }); } }
     });
-    window.addEventListener("resize", drawLines, { passive: true });
   }
 
-  /* ============================== LETTERS =============================== */
+  /* ============================= SECTION 7 ============================== */
+  function initReasons() {
+    const box = $("#skyStars"), card = $("#reasonCard"), txt = $("#reasonText"), doneEl = $("#reasonsDone");
+    const pts = [[18, 18], [50, 12], [82, 20], [30, 42], [70, 40], [14, 70], [50, 66], [86, 72]];
+    const caught = new Set();
+    let hideT = null;
+    box.innerHTML = pts.map((p, i) => `<button type="button" class="sky-star" style="left:${p[0]}%;top:${p[1]}%;--d:${(i * 0.7) % 4}s" data-i="${i}" aria-label="Star ${i + 1}">${STAR}</button>`).join("");
+    const hide = () => { card.classList.remove("show"); };
+    function showCard(text) {
+      clearTimeout(hideT);
+      txt.textContent = text;
+      card.classList.remove("show"); void card.offsetWidth; card.classList.add("show");
+      hideT = setTimeout(hide, 4500);
+    }
+    card.addEventListener("click", () => { clearTimeout(hideT); hide(); });
+    box.addEventListener("click", (e) => {
+      const b = e.target.closest(".sky-star"); if (!b || b.classList.contains("caught")) return;
+      const i = +b.dataset.i;
+      sparkleAt(b, 12);
+      b.classList.add("caught");
+      caught.add(i);
+      showCard(CONTENT.reasons[i]);
+      if (caught.size === pts.length) {
+        setTimeout(() => {
+          doneEl.classList.add("show"); Starfield.shoot(); sparkleAt(doneEl, 16);
+          if (typeof confetti === "function") { const r = doneEl.getBoundingClientRect(); confetti({ particleCount: 40, spread: 100, startVelocity: 20, shapes: ["star"], colors: ["#FFD98E", "#FFF6E9", "#E9DDFB"], scalar: 0.9, origin: { x: 0.5, y: (r.top + r.height / 2) / innerHeight }, disableForReducedMotion: true, zIndex: 90 }); }
+        }, 1200);
+      }
+    });
+  }
+
+  /* ============================= SECTION 8 ============================== */
   function initLetters() {
     const grid = $("#envGrid"), modal = $("#letterModal");
     grid.innerHTML = CONTENT.letters.map((l, i) => `
-      <button type="button" class="envelope" data-i="${i}" aria-label="${l.when}">
+      <button type="button" class="envelope" data-i="${i}" aria-label="${l.when.replace(/"/g, "&quot;")}">
         <span class="env-body"></span><span class="env-flap"></span><span class="env-pocket"></span>
         <span class="env-seal">${STAR}</span><span class="env-label">${l.when}</span>
       </button>`).join("");
@@ -428,8 +575,8 @@ const CONTENT = {
       const l = CONTENT.letters[+env.dataset.i];
       lastFocus = env;
       setTimeout(() => {
-        $("#letterTitle").textContent = l.when + "…";
-        $("#letterBody").innerHTML = l.body.map((p) => `<p>${p}</p>`).join("");
+        $("#letterTitle").textContent = l.when;
+        $("#letterBody").innerHTML = `<p>${l.body}</p>`;
         modal.hidden = false; document.body.style.overflow = "hidden"; $("#letterClose").focus();
       }, reduceMotion ? 0 : 450);
     });
@@ -439,9 +586,58 @@ const CONTENT = {
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !modal.hidden) close(); });
   }
 
-  /* =============================== LYRICS =============================== */
+  /* ============================= SECTION 9 ============================== */
+  function initVerses() {
+    const track = $("#verseTrack"), dots = $("#verseDots"), slider = $("#verseSlider");
+    const V = CONTENT.verses;
+    track.innerHTML = V.map((v, i) => `
+      <figure class="verse-slide${i === 0 ? " active" : ""}" aria-hidden="${i !== 0}">
+        <blockquote>“${v.text}”</blockquote>
+        <figcaption><span class="verse-ref">${v.ref}</span><span class="verse-note">${v.note}</span></figcaption>
+      </figure>`).join("");
+    dots.innerHTML = V.map((_, i) => `<button type="button" role="tab" aria-label="Verse ${i + 1}" aria-selected="${i === 0}"><i></i></button>`).join("");
+    const slides = $$(".verse-slide", track), dbs = $$("button", dots);
+    let cur = 0, timer = null, paused = false;
+    function size() { track.style.height = Math.max(...slides.map((s) => s.offsetHeight)) + "px"; }
+    function go(i) {
+      slides[cur].classList.remove("active"); slides[cur].setAttribute("aria-hidden", "true"); dbs[cur].setAttribute("aria-selected", "false");
+      cur = (i + V.length) % V.length;
+      slides[cur].classList.add("active"); slides[cur].setAttribute("aria-hidden", "false"); dbs[cur].setAttribute("aria-selected", "true");
+    }
+    function start() { clearInterval(timer); if (!reduceMotion) timer = setInterval(() => { if (!paused && !document.hidden) go(cur + 1); }, 7000); }
+    dbs.forEach((b, i) => b.addEventListener("click", () => { go(i); start(); }));
+    slider.addEventListener("pointerenter", () => (paused = true)); slider.addEventListener("pointerleave", () => (paused = false));
+    let sx = 0;
+    slider.addEventListener("touchstart", (e) => (sx = e.touches[0].clientX), { passive: true });
+    slider.addEventListener("touchend", (e) => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) { go(cur + (dx < 0 ? 1 : -1)); start(); } }, { passive: true });
+    window.addEventListener("resize", size, { passive: true });
+    document.fonts?.ready.then(size); size(); start();
+  }
+
+  /* ============================= SECTION 10 ============================= */
   function initLyrics() {
-    $("#lyrics").innerHTML = CONTENT.lyrics.map(([label, ...lines]) => `<h4>${label}</h4>${lines.map((l) => `<p>${l}</p>`).join("")}`).join("");
+    const box = $("#lyrics");
+    const blocks = CONTENT.lyrics.trim().split(/\n\s*\n/);
+    const chorus = (blocks.find((b) => b.startsWith("[Chorus]")) || "").split("\n").slice(1);
+    let html = "";
+    blocks.forEach((b) => {
+      const lines = b.split("\n");
+      const label = lines[0].replace(/^\[|\]$/g, "");
+      const body = /repeat/i.test(label) ? chorus : lines.slice(1);
+      html += `<div class="ly-block"><h4>${label}</h4>${body.map((l) => `<p class="ly">${l}</p>`).join("")}</div>`;
+    });
+    box.innerHTML = html;
+    // karaoke-style highlight: no timestamps, so lines follow the song's progress evenly
+    const lines = $$(".ly", box), a = $("#songAudio");
+    let last = -1;
+    a.addEventListener("timeupdate", () => {
+      if (!a.duration) return;
+      const idx = Math.min(lines.length - 1, Math.floor((a.currentTime / a.duration) * lines.length));
+      if (idx === last) return;
+      lines[last]?.classList.remove("on"); lines[idx].classList.add("on"); last = idx;
+      const target = lines[idx].offsetTop - box.clientHeight / 2 + lines[idx].offsetHeight / 2;
+      box.scrollTo({ top: target, behavior: reduceMotion ? "auto" : "smooth" });
+    });
   }
 
   /* =============================== GALLERY ============================== */
@@ -501,7 +697,7 @@ const CONTENT = {
 
   /* ================================ WISH ================================ */
   function initWish() {
-    const star = $("#wishStar"), hint = $("#wishHint"), after = $("#wishAfter"), sky = $("#shooting");
+    const star = $("#wishStar"), after = $("#wishAfter"), sky = $("#shooting");
     let holdTimer = null, fired = false;
     function shootingStar() {
       const el = document.createElement("i"); sky.appendChild(el);
@@ -522,7 +718,6 @@ const CONTENT = {
       if (hasGSAP && !reduceMotion) gsap.fromTo(star.querySelector("svg"), { scale: 1.5 }, { scale: 1, duration: 1.2, ease: "elastic.out(1, .4)" });
       shootingStar(); Starfield.shoot();
       fireConfetti("wish");
-      hint.style.opacity = 0;
       setTimeout(() => after.classList.add("show"), 600);
     }
     star.addEventListener("pointerdown", (e) => { e.preventDefault(); star.classList.add("holding"); holdTimer = setTimeout(wish, 1400); });
@@ -551,6 +746,39 @@ const CONTENT = {
     const btnPrev = $("#bookPrev"), btnNext = $("#bookNext"), btnFs = $("#bookFs"), arPrev = $("#bookArrowPrev"), arNext = $("#bookArrowNext");
     let pdf = null, total = 23, urls = [], pageEls = [], flip = null, mode = null, current = 0, rendering = null, coverDone = false;
     const ASPECT = 648 / 432;
+    const tilt = $("#bookTilt");
+
+    // soft, synthesized page-turn sound (no audio file needed)
+    let actx = null;
+    function pageSound() {
+      if (!CONFIG.PAGE_TURN_SOUND) return;
+      try {
+        actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+        if (actx.state === "suspended") actx.resume();
+        const dur = 0.32, n = Math.floor(actx.sampleRate * dur), buf = actx.createBuffer(1, n, actx.sampleRate), d = buf.getChannelData(0);
+        for (let i = 0; i < n; i++) { const t = i / n; d[i] = (Math.random() * 2 - 1) * Math.pow(Math.sin(Math.PI * t), 2) * (1 - t * 0.6); }
+        const src = actx.createBufferSource(); src.buffer = buf;
+        const bp = actx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 2400; bp.Q.value = 0.7;
+        const g = actx.createGain(); g.gain.value = 0.07;
+        src.connect(bp).connect(g).connect(actx.destination); src.start();
+      } catch (e) {}
+    }
+
+    // floating / tilting book: follows the mouse on desktop, device tilt on phones
+    let tiltOn = true;
+    function setTilt(rx, ry) { if (!reduceMotion && tiltOn) tilt.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`; }
+    viewport.addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse" || e.buttons) return;
+      const r = viewport.getBoundingClientRect();
+      setTilt(((e.clientY - r.top) / r.height - 0.5) * -4, ((e.clientX - r.left) / r.width - 0.5) * 5);
+    });
+    viewport.addEventListener("pointerleave", () => setTilt(0, 0));
+    viewport.addEventListener("pointerdown", () => { tiltOn = false; tilt.style.transform = "none"; });
+    window.addEventListener("pointerup", () => { setTimeout(() => (tiltOn = true), 400); });
+    window.addEventListener("deviceorientation", (e) => {
+      if (e.gamma == null || openEl.hidden || isDesktop()) return;
+      setTilt(Math.max(-3, Math.min(3, ((e.beta || 45) - 45) * -0.08)), Math.max(-4, Math.min(4, e.gamma * 0.12)));
+    }, { passive: true });
 
     function pdfReady() {
       if (pdf) return Promise.resolve(pdf);
@@ -593,7 +821,7 @@ const CONTENT = {
           const u = await renderPage(i, w);
           urls[i - 1] = u;
           pageEls[i - 1].innerHTML = `<img src="${u}" alt="Page ${i} of ${total}" draggable="false" />`;
-          loadingText.textContent = `Opening the book… ${i} / ${total}`;
+          loadingText.textContent = `${i} / ${total}`;
           if (i === Math.min(4, total)) build(); // show the book as soon as the first pages are ready
         }
         if (!flip && !mode) build();
@@ -645,6 +873,7 @@ const CONTENT = {
       holder.style.width = (size.spread ? size.pageW * 2 : size.pageW) + "px";
       holder.style.height = size.pageH + "px";
       holder.style.aspectRatio = "auto";
+      holder.classList.toggle("spread", size.spread);
       mode = { spread: size.spread };
       const useStPageFlip = window.St && window.St.PageFlip && !window.__forceCssBook;
       if (useStPageFlip) {
@@ -661,7 +890,7 @@ const CONTENT = {
           flip.loadFromHTML(els);
           // keep late-rendered pages in sync
           pageEls.forEach((p, i) => { if (!p.firstChild) waitFill(i, els[i]); });
-          flip.on("flip", (e) => { current = e.data; updateUI(); });
+          flip.on("flip", (e) => { current = e.data; updateUI(); pageSound(); });
           mode.api = { next: () => flip.flipNext(), prev: () => flip.flipPrev() };
           stage.dataset.engine = "stpageflip";
         } catch (err) {
@@ -699,7 +928,8 @@ const CONTENT = {
         if (target === current) return;
         busy = true;
         const leaf = document.createElement("div"); leaf.className = "cb-leaf"; leaf.style.width = size.pageW + "px";
-        const finish = () => { current = target; paint(); updateUI(); busy = false; };
+        const finish = () => { if (!busy) return; current = target; paint(); updateUI(); busy = false; };
+        pageSound();
         if (reduceMotion) { finish(); return; }
         if (spread) {
           const l = leftOf(current), nl = leftOf(target);
@@ -764,6 +994,12 @@ const CONTENT = {
     }
     document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && stage.classList.contains("is-fs")) setFs(false); });
 
+    // tap the left / right edge of the page to turn (single-page mode)
+    holder.addEventListener("click", (e) => {
+      if (!mode || mode.spread || stage.dataset.engine !== "stpageflip") return;
+      const r = holder.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+      if (x < 0.25) mode.api.prev(); else if (x > 0.75) mode.api.next();
+    });
     closed.addEventListener("click", open);
     [btnNext, arNext].forEach((b) => b.addEventListener("click", () => mode?.api?.next()));
     [btnPrev, arPrev].forEach((b) => b.addEventListener("click", () => mode?.api?.prev()));
@@ -805,7 +1041,7 @@ const CONTENT = {
 
   /* ================================ INIT ================================ */
   $$(".asset[data-src]").forEach((el) => { if (!el.closest("#galleryGrid")) initAsset(el); });
-  initQuestions(); initReasons(); initLetters(); initLyrics(); initGallery(); initPromises(); initWish(); initAsk(); initNav();
+  initLetter(); initTimeline(); initQuestions(); initReasons(); initLetters(); initVerses(); initLyrics(); initGallery(); initPromises(); initWish(); initAsk(); initNav();
   if (hasGSAP && !reduceMotion) gsap.set(".nova", { opacity: 0, scale: 0.2 }); else document.querySelector(".nova").style.opacity = 0.85;
   Lock.init();
   if (!window.St) console.info("[book] StPageFlip not available — the custom 3D CSS page-turn will be used.");

@@ -31,7 +31,9 @@ const CONFIG = {
 - **MY_EMAIL**: the address her question is sent to (it opens her mail app with the subject "A question for you ✨").
 - **GALLERY_CAPTIONS**: captions for the 12 polaroids. Empty ones show "Add a caption", and she can also tap a caption to write her own (saved on her device).
 
-All other text on the site (flip cards, reasons, letters, lyrics, promises) is in the `CONTENT` object right below `CONFIG`.
+- **PAGE_TURN_SOUND**: `true`/`false` for the soft paper sound when a book page turns.
+
+The longer text on the site (timeline, the 19 question cards, the 8 reasons, the Open when letters, the verses, the song lyrics, and the promises) is in the `CONTENT` object right below `CONFIG`. The rest of the text is in `index.html`.
 
 ## 2. Where to put your files
 
@@ -40,10 +42,10 @@ Use these exact file names. Anything missing shows a soft purple placeholder fra
 | File | Used in |
 |---|---|
 | `book/maybe-you-never-asked.pdf` | Section 5, the flipbook (already included) |
-| `images/photo-01.jpg` … `images/photo-12.jpg` | Our little moments (gallery) |
+| `images/photo-01.jpg` … `images/photo-12.jpg` | Our little moments (gallery). photo-01 to photo-05 also fill the photo slots in the Our Story timeline |
 | `images/nova-portrait.jpg` | Optional round portrait in the hero |
-| `images/screenshot-message.png` | "Where it all began" (her message, January 30, 2025) |
-| `images/screenshot-streak.png` | Timeline: Day 10 of our streak |
+| `images/screenshot-streak.png` | Our Story timeline: "Day 10 of our streak · February 3, 2025" |
+| `images/screenshot-message.png` | Our Story timeline: "One of your messages · January 30, 2025" |
 | `audio/good-evening-love.mp3` | The song (music button and the Our Song player) |
 
 Photos can be any size; they are cropped to fit. Square-ish photos look best in the polaroids. To use a different book, replace the PDF with one of the same name (any page count works).

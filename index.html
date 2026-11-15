@@ -49,7 +49,7 @@
   <header class="topbar" id="topbar">
     <a href="#hero" class="brand"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg><span>Nova Grace</span></a>
     <nav class="topnav" aria-label="Sections">
-      <a href="#hero">Home</a><a href="#story">Our Story</a><a href="#book">The Book</a><a href="#questions">Questions</a><a href="#reasons">Reasons</a><a href="#song-section">Our Song</a><a href="#gallery">Moments</a><a href="#wish">Wish</a><a href="#ask">Ask Me</a>
+      <a href="#hero">Home</a><a href="#letter">Letter</a><a href="#story">Our Story</a><a href="#book">The Book</a><a href="#questions">Questions</a><a href="#reasons">Reasons</a><a href="#song-section">Our Song</a><a href="#gallery">Moments</a><a href="#wish">Wish</a><a href="#ask">Ask Me</a>
     </nav>
   </header>
   <nav class="bottomnav" id="bottomnav" aria-label="Sections">
@@ -69,14 +69,13 @@
   <audio id="songAudio" src="audio/good-evening-love.mp3" preload="metadata" loop></audio>
 
   <main id="site" aria-hidden="true">
-    <!-- ============ SECTION 1: OPENING / COUNTDOWN ============ -->
+    <!-- ============ SECTION 1: BIRTHDAY COUNTDOWN / OPENING ============ -->
     <section id="hero" class="section hero">
       <div class="hero-sky" aria-hidden="true"><span class="nova"></span></div>
       <div class="hero-content">
         <div class="hero-portrait asset" data-src="images/nova-portrait.jpg" data-alt="Nova Grace" data-optional="true"></div>
-        <p class="eyebrow hero-eyebrow">for Nova Grace Palmes</p>
         <h1 class="hero-title"><span class="ht-line">Happy Birthday,</span><span class="ht-line ht-name">Nova Grace</span></h1>
-        <p class="hero-sub script">the brightest star in my sky</p>
+        <p class="hero-sub">A little universe I made for you.</p>
         <div class="countdown glass" id="countdown" hidden>
           <p class="cd-text">Your day is almost here, Nova Grace.</p>
           <div class="cd-grid">
@@ -86,66 +85,69 @@
             <div><span id="cdS">00</span><small>seconds</small></div>
           </div>
         </div>
-        <a href="#story" class="scroll-cue" aria-label="Scroll down"><span>scroll</span><i></i></a>
+        <a href="#name" class="scroll-cue" aria-label="Scroll down"><svg viewBox="0 0 24 24"><path d="M12 16.6 4.7 9.3l1.4-1.4 5.9 5.9 5.9-5.9 1.4 1.4z"/></svg></a>
       </div>
     </section>
 
-    <!-- ============ SECTION 2: HOW IT STARTED ============ -->
-    <section id="story" class="section">
+    <!-- ============ SECTION 2: THE MEANING OF YOUR NAME ============ -->
+    <section id="name" class="section">
       <div class="wrap">
-        <p class="eyebrow reveal">Chapter one</p>
-        <h2 class="title reveal">Where it all began.</h2>
-        <div class="story-grid">
-          <div class="glass card story-card reveal float">
-            <p class="story-date"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg>January 24, 2025 · around 2 PM</p>
-            <p>We met on January 24, 2025, at around 2 PM. And if you want to know where, it was on TikTok, of all places.</p>
-            <p>Out of everyone who saved or hearted my content, you were the one I looked for. I went to your profile, and I was the one who messaged first. I even asked if you were also in IT, and boom, you were.</p>
-            <p class="script accent">Funny how a simple message can turn into the best part of my day.</p>
+        <h2 class="title reveal">The Meaning of Your Name</h2>
+        <div class="name-grid">
+          <article class="glass card name-card reveal float">
+            <h3 class="name-word">NOVA</h3>
+            <p>From the Latin word for 'new.' In the night sky, a nova is a star that suddenly shines so bright it seems to appear out of nowhere. That is exactly how you came into my life.</p>
+          </article>
+          <article class="glass card name-card reveal float">
+            <h3 class="name-word">GRACE</h3>
+            <p>A gift from God that is never earned, only received. That is what you are to me.</p>
+          </article>
+        </div>
+        <p class="name-close reveal">A new star. A gift from God. Nova Grace.</p>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 3: A BIRTHDAY LETTER ============ -->
+    <section id="letter" class="section">
+      <div class="wrap narrow">
+        <h2 class="title reveal">A Birthday Letter</h2>
+        <div class="bl-card glass reveal" id="blCard">
+          <div class="bl-envelope" id="blEnvelope">
+            <span class="bl-flap"></span>
+            <span class="bl-pocket"></span>
+            <button type="button" class="bl-seal" id="blSeal" aria-label="Open the letter">
+              <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.5 3 5 6.4 5c2.3 0 4 1.4 5.6 3.4C13.6 6.4 15.3 5 17.6 5 21 5 23.1 8.5 21.6 11.8 19.5 16.4 12 21 12 21Z"/></svg>
+            </button>
           </div>
-          <figure class="shot reveal">
-            <div class="asset phone" data-src="images/screenshot-message.png" data-alt="One of your messages"></div>
-            <figcaption>One of your messages · January 30, 2025</figcaption>
-          </figure>
+          <div class="bl-paper" id="blPaper" aria-live="polite">
+            <p>Happy birthday, my love.</p>
+            <p>On January 24, 2025, I sent a message to someone I only knew from TikTok. I did not know I was messaging the person I would end up loving. We started with tech stacks and a streak. Then we became frenny. And then, little by little, I could not hide my feelings anymore.</p>
+            <p>Thank you for being genuine, consistent, and kind. Thank you for every update, every prayer, and every morning we opened His Word together. Thank you for staying after I told you how I felt.</p>
+            <p>On your birthday, I pray that God gives you more than you ask for: peace in your heart, strength on your tired days, joy in the small things, and a life that stays full of His love.</p>
+            <p>And I pray that I get to celebrate many more birthdays with you.</p>
+            <p>I love you, Nova Grace.</p>
+            <p class="bl-sign">Yours,<br />John Carlo</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ SECTION 3: FROM STREAK TO FRENNY (TIMELINE) ============ -->
-    <section id="timeline" class="section">
+    <!-- ============ SECTION 4: OUR STORY (TIMELINE) ============ -->
+    <section id="story" class="section">
       <div class="wrap">
-        <p class="eyebrow reveal">Chapter two</p>
-        <h2 class="title reveal">From a streak to forever.</h2>
-        <ol class="timeline">
-          <li class="reveal"><span class="tl-dot"></span><div class="glass tl-card"><h3>The first message</h3><p class="tl-date">January 24, 2025</p><p>I messaged first, and we ended up talking about the tech stacks we both use.</p></div></li>
-          <li class="reveal"><span class="tl-dot"></span><div class="glass tl-card"><h3>Day 10 of our streak</h3><p class="tl-date">February 3, 2025</p><p>At first, the streak was the only thing we were protecting.</p>
-            <div class="asset phone small" data-src="images/screenshot-streak.png" data-alt="Day 10 of our streak"></div></div></li>
-          <li class="reveal"><span class="tl-dot"></span><div class="glass tl-card"><h3>Frenny season</h3><p class="tl-date">daily updates</p><p>Somewhere along the way, a friendship formed that neither of us expected, and we started calling each other “frenny.”</p></div></li>
-          <li class="reveal"><span class="tl-dot"></span><div class="glass tl-card"><h3>Mornings with His Word</h3><p class="tl-date">every morning</p><p>Before we ever talked about anything else, we were already talking about Him.</p></div></li>
-          <li class="reveal"><span class="tl-dot"></span><div class="glass tl-card"><h3>The scariest, best thing</h3><p class="tl-date">I told you</p><p>Looking back, it was the scariest thing I ever said, and the best decision I ever made.</p></div></li>
-          <li class="reveal"><span class="tl-dot glow"></span><div class="glass tl-card"><h3>Frenny turned to my whole world</h3><p class="tl-date">today, and every day after</p><p>Today, tomorrow, and for all the days after that.</p></div></li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- ============ SECTION 4: A THREEFOLD CORD ============ -->
-    <section id="verse" class="section verse">
-      <div class="wrap narrow center">
-        <div class="verse-star reveal" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg></div>
-        <blockquote class="verse-quote reveal">“And if one prevail against him, two shall withstand him; and a threefold cord is not quickly broken.”</blockquote>
-        <p class="verse-ref reveal">Ecclesiastes 4:12 (KJV)</p>
-        <p class="script verse-note reveal">Two of us, with Him in the middle.</p>
+        <h2 class="title reveal">Our Story</h2>
+        <ol class="timeline" id="timelineList"></ol>
       </div>
     </section>
 
     <!-- ============ SECTION 5: THE BOOK ============ -->
     <section id="book" class="section book-section">
       <div class="wrap">
-        <p class="eyebrow reveal">A book by John Carlo Gamayo</p>
         <h2 class="title reveal">Maybe You Never Asked</h2>
-        <p class="lead reveal">Answers to the questions you might never ask me.</p>
+        <p class="lead reveal">answers to the questions you couldn't ask me</p>
+        <p class="byline reveal">A book by John Carlo Gamayo, for Nova Grace Palmes</p>
 
         <div class="book-stage reveal" id="bookStage">
-          <!-- closed state -->
           <button type="button" class="book-closed" id="bookClosed" aria-label="Open the book">
             <span class="book-3d">
               <span class="book-cover" id="bookCover"><span class="cover-loading"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg></span></span>
@@ -155,100 +157,96 @@
             <span class="tap-open"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg>Tap to open</span>
           </button>
 
-          <!-- open state -->
           <div class="book-open" id="bookOpen" hidden>
             <div class="book-viewport" id="bookViewport">
               <button type="button" class="book-arrow prev" id="bookArrowPrev" aria-label="Previous page"><svg viewBox="0 0 24 24"><path d="M15.4 5.4 14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg></button>
-              <div class="flip-holder" id="flipHolder"></div>
+              <div class="book-tilt" id="bookTilt"><div class="flip-holder" id="flipHolder"></div></div>
               <button type="button" class="book-arrow next" id="bookArrowNext" aria-label="Next page"><svg viewBox="0 0 24 24"><path d="m8.6 18.6 1.4 1.4 8-8-8-8-1.4 1.4 6.6 6.6z"/></svg></button>
-              <div class="book-loading" id="bookLoading"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg><span id="bookLoadingText">Opening the book…</span></div>
+              <div class="book-loading" id="bookLoading"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg><span id="bookLoadingText"></span></div>
             </div>
             <p class="page-indicator" id="pageIndicator" aria-live="polite">Page 1 of 23</p>
             <div class="book-controls">
               <button type="button" class="btn ghost" id="bookPrev">Previous</button>
-              <button type="button" class="btn ghost" id="bookFs">Fullscreen</button>
               <button type="button" class="btn" id="bookNext">Next</button>
+              <button type="button" class="btn ghost" id="bookFs">Fullscreen</button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ SECTION 6: QUESTIONS (FLIP CARDS) ============ -->
+    <!-- ============ SECTION 6: TAP-TO-REVEAL CARDS ============ -->
     <section id="questions" class="section">
       <div class="wrap">
-        <p class="eyebrow reveal">Tap a card</p>
-        <h2 class="title reveal">The questions you never asked.</h2>
+        <h2 class="title reveal">Maybe You Never Asked</h2>
+        <p class="q-progress reveal" id="qProgress" aria-live="polite">0 of 19 opened</p>
         <div class="flip-grid" id="flipGrid"></div>
+        <p class="q-done" id="qDone" aria-live="polite">Now it is your turn. Scroll down.</p>
       </div>
     </section>
 
-    <!-- ============ SECTION 7: REASONS (STARS) ============ -->
+    <!-- ============ SECTION 7: CATCH THE STARS ============ -->
     <section id="reasons" class="section">
       <div class="wrap">
-        <p class="eyebrow reveal">Tap the stars</p>
-        <h2 class="title reveal">Reasons I love you.</h2>
+        <h2 class="title reveal">Reasons I'm thankful for you.</h2>
+        <p class="lead small reveal">Tap the stars.</p>
         <div class="sky-box glass reveal" id="skyBox">
-          <svg class="constellation" id="constellation" aria-hidden="true"></svg>
           <div class="sky-stars" id="skyStars"></div>
-          <div class="reason-pop" id="reasonPop" aria-live="polite"><p id="reasonText">Every star holds a reason.</p><span id="reasonCount">0 of 12 found</span></div>
+          <div class="reason-card" id="reasonCard" role="button" tabindex="-1" aria-live="polite"><p id="reasonText"></p></div>
+          <p class="reasons-done" id="reasonsDone">Eight stars, and I have so many more.</p>
         </div>
       </div>
     </section>
 
-    <!-- ============ SECTION 8: OPEN WHEN (ENVELOPES) ============ -->
-    <section id="letters" class="section">
+    <!-- ============ SECTION 8: OPEN WHEN... ============ -->
+    <section id="openwhen" class="section">
       <div class="wrap">
-        <p class="eyebrow reveal">Little letters</p>
-        <h2 class="title reveal">Open when…</h2>
+        <h2 class="title reveal">Open when...</h2>
         <div class="env-grid" id="envGrid"></div>
       </div>
     </section>
 
-    <!-- ============ SECTION 9: YOU KNOW WHAT'S BEAUTIFUL ============ -->
-    <section id="beautiful" class="section beautiful">
+    <!-- ============ SECTION 9: VERSES FOR US (KJV) ============ -->
+    <section id="verses" class="section verses">
       <div class="wrap narrow center">
-        <p class="b-q reveal">You know what’s beautiful?</p>
-        <p class="b-sub reveal">Read the first word.</p>
-        <p class="b-you" id="bYou">You.</p>
-        <p class="b-text reveal">Not just the way you look, though I would be lying if I said I never noticed. I mean the way you are genuine, the way you stay consistent, the way you cheer for the people you care about, and the way you pray for them.</p>
+        <h2 class="title reveal">Verses for Us</h2>
+        <div class="verse-slider glass reveal" id="verseSlider" aria-roledescription="carousel">
+          <div class="verse-track" id="verseTrack"></div>
+          <div class="verse-dots" id="verseDots" role="tablist"></div>
+        </div>
       </div>
     </section>
 
     <!-- ============ SECTION 10: OUR SONG ============ -->
     <section id="song-section" class="section">
       <div class="wrap">
-        <p class="eyebrow reveal">Our song</p>
         <h2 class="title reveal">Good Evening, Love</h2>
+        <p class="lead small reveal">A song I wrote for you.</p>
         <div class="player glass reveal" id="player">
           <div class="vinyl" id="vinyl"><div class="vinyl-label"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg></div></div>
           <div class="player-body">
             <p class="player-title">Good Evening, Love</p>
-            <p class="player-artist">written by John Carlo Gamayo, for Nova Grace</p>
             <div class="progress" id="progress" role="slider" tabindex="0" aria-label="Song progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progressFill"></span></div>
             <div class="player-times"><span id="tCur">0:00</span><span id="tDur">--:--</span></div>
             <button type="button" class="play-btn" id="playBtn" aria-label="Play song"><svg class="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
-            <p class="player-note" id="playerNote" hidden>Add the song at <code>audio/good-evening-love.mp3</code> ✨</p>
           </div>
         </div>
         <div class="lyrics glass reveal" id="lyrics"></div>
       </div>
     </section>
 
-    <!-- ============ SECTION 11: GALLERY ============ -->
+    <!-- ============ SECTION 11: PHOTO GALLERY ============ -->
     <section id="gallery" class="section">
       <div class="wrap">
-        <p class="eyebrow reveal">Polaroids</p>
         <h2 class="title reveal">Our little moments.</h2>
         <div class="gallery" id="galleryGrid"></div>
       </div>
     </section>
 
-    <!-- ============ SECTION 12: PROMISES ============ -->
+    <!-- ============ SECTION 12: MY PROMISES TO YOU ============ -->
     <section id="promises" class="section">
       <div class="wrap narrow center">
-        <p class="eyebrow reveal">Always</p>
-        <h2 class="title reveal">My promises to you.</h2>
+        <h2 class="title reveal">My Promises to You</h2>
         <ul class="promises" id="promiseList"></ul>
       </div>
     </section>
@@ -257,12 +255,11 @@
     <section id="wish" class="section wish">
       <div class="wrap narrow center">
         <h2 class="title reveal">Make a wish, Nova Grace.</h2>
-        <button type="button" class="wish-star" id="wishStar" aria-label="Tap or hold to make a wish">
+        <button type="button" class="wish-star" id="wishStar" aria-label="Tap or hold the star to make a wish">
           <span class="ws-glow"></span>
           <svg viewBox="0 0 100 100"><use href="#i-star4"/></svg>
           <span class="ws-ring"></span>
         </button>
-        <p class="wish-hint" id="wishHint">Tap or hold the star</p>
         <div class="wish-after" id="wishAfter" aria-live="polite">
           <p class="wa-1">Whatever you wished for, I'm praying for it too.</p>
           <p class="wa-2 script">Happy birthday, my love.</p>
@@ -278,7 +275,7 @@
         <h2 class="title reveal">So ask me anyway.</h2>
         <form class="ask-form glass reveal" id="askForm">
           <label for="askInput" class="sr-only">Your question</label>
-          <textarea id="askInput" rows="4" placeholder="Type your question here…" maxlength="1500"></textarea>
+          <textarea id="askInput" rows="4" maxlength="1500"></textarea>
           <button type="submit" class="btn glow-btn">Send to John Carlo <svg viewBox="0 0 24 24"><path d="M3 20.5 21.5 12 3 3.5 3 10l13 2-13 2z"/></svg></button>
         </form>
       </div>
@@ -304,7 +301,6 @@
       <button type="button" class="lb-close" id="letterClose" aria-label="Close letter">✕</button>
       <p class="letter-when script" id="letterTitle"></p>
       <div class="letter-body" id="letterBody"></div>
-      <p class="letter-sign script">— John Carlo</p>
     </div>
   </div>
 
