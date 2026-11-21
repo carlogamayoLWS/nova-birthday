@@ -285,13 +285,21 @@ Good evening, love.`,
     if (!el.querySelector(".ph")) {
       el.insertAdjacentHTML("beforeend", `<div class="ph">${STAR}</div>`);
     }
+    // data-src is tried first, then any comma-separated data-fallback URLs
+    // (e.g. the hero tries nova-portrait.png, then nova-portrait.jpg).
+    const queue = [src, ...(el.dataset.fallback || "").split(",").map((u) => u.trim()).filter(Boolean)];
+    const hero = el.closest("#hero");
     const img = new Image();
     img.alt = el.dataset.alt || "";
     img.decoding = "async";
-    img.loading = "lazy";
-    img.onload = () => { el.classList.add("has-img"); el.prepend(img); requestAnimationFrame(() => img.classList.add("loaded")); };
-    img.onerror = () => el.classList.add("missing");
-    img.src = src;
+    img.loading = hero ? "eager" : "lazy";
+    img.onload = () => {
+      el.classList.add("has-img"); el.prepend(img);
+      if (hero) hero.classList.add("has-photo");
+      requestAnimationFrame(() => img.classList.add("loaded"));
+    };
+    img.onerror = () => { queue.shift(); if (queue.length) img.src = queue[0]; else el.classList.add("missing"); };
+    img.src = queue[0];
   }
 
   /* =============================== LOCK ================================= */
@@ -384,12 +392,14 @@ Good evening, love.`,
       .set(".hero-my", { clipPath: "inset(-20% 100% -20% 0)" })
       .set(".hero-portrait", { clipPath: "inset(100% 0% 0% 0%)" })
       .set(".hero-portrait > *", { scale: 1.25 })
+      .set(".hero-glow", { opacity: 0, scale: 0.6 })
       .set(".nova", { scale: 0, opacity: 0 })
       .set([".hero-sub", ".scroll-cue"], { opacity: 0, y: 24 })
       .to(".hero-kicker", { opacity: 1, letterSpacing: "0.62em", duration: 2.2, ease: "power3.out" }, 0.5)
       .to(".hero-name .ch", { opacity: 1, yPercent: 0, rotateX: 0, filter: "blur(0px)", duration: 1.6, stagger: 0.07 }, 0.75)
-      .to(".hero-portrait", { clipPath: "inset(0% 0% 0% 0%)", duration: 1.8, ease: "expo.inOut" }, 1.2)
+      .to(".hero-portrait", { clipPath: "inset(-10% -10% 0% -10%)", duration: 1.8, ease: "expo.inOut" }, 1.2)
       .to(".hero-portrait > *", { scale: 1, duration: 2.2 }, 1.3)
+      .to(".hero-glow", { opacity: 1, scale: 1, duration: 2.2, ease: "power2.out" }, 1.5)
       .to(".hero-my", { clipPath: "inset(-20% -10% -20% 0)", duration: 1.5, ease: "power2.inOut" }, 2.1)
       .to(".nova", { scale: 2.2, opacity: 1, duration: 0.45, ease: "power2.out" }, 2.5)
       .to(".nova", { scale: 1, duration: 1.4, ease: "elastic.out(1, .45)" }, 2.95)
@@ -423,6 +433,7 @@ Good evening, love.`,
     gsap.to(".hero-name", { yPercent: 28, ease: "none", scrollTrigger: hs });
     gsap.to(".hero-my", { yPercent: -60, ease: "none", scrollTrigger: hs });
     gsap.to(".hero-portrait-wrap", { y: -90, ease: "none", scrollTrigger: hs });
+    gsap.to(".hero-glow", { scale: 1.25, opacity: 0.4, ease: "none", scrollTrigger: hs });
     gsap.to(".hero-kicker", { y: 60, opacity: 0, ease: "none", scrollTrigger: hs });
     gsap.to(".hero-foot", { y: -40, opacity: 0, ease: "none", scrollTrigger: { ...hs, start: "15% top" } });
     // smooth section transitions: content settles in as each section enters

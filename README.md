@@ -42,7 +42,7 @@ Use these exact file names. Anything missing shows a soft purple placeholder fra
 |---|---|
 | `book/maybe-you-never-asked.pdf` | Section 5, the flipbook (already included) |
 | `images/photo-01.jpg` … `images/photo-12.jpg` | Our little moments (gallery). photo-01 to photo-05 also fill the photo slots in the Our Story timeline |
-| `images/nova-portrait.jpg` | Optional portrait in the hero (arch frame behind "MY PALAGI"; portrait photo works best) |
+| `images/nova-portrait.png` | Hero photo of Nova. Use a **transparent-background PNG cutout** (current one is 433×577) — she stands in front of the big "PALAGI" with a soft glow and shadow, no frame. If the PNG is missing it tries `images/nova-portrait.jpg` (shown the same way); if neither exists, an arch placeholder is shown. Shown at about its natural size (max ~1.3×), so a bigger/taller cutout will look sharper. |
 | `images/screenshot-streak.png` | Our Story timeline: "Day 10 of our streak · February 3, 2025" |
 | `images/screenshot-message.png` | Our Story timeline: "One of your messages · January 30, 2025" |
 | `audio/good-evening-love.mp3` | The song (music button and the Our Song player) |
