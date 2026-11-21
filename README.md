@@ -18,7 +18,6 @@ Open `js/main.js`. The very first thing in the file is the `CONFIG` object:
 
 ```js
 const CONFIG = {
-  BIRTHDAY_DATE: "2026-12-31",          // ⚠️ change to her real birthday, format YYYY-MM-DD
   PASSCODE: "01242025",                 // lock-screen code (MMDDYYYY) = January 24, 2025
   MY_EMAIL: "your-email@example.com",   // ⚠️ your email, used by "Send to John Carlo"
   ...
@@ -26,7 +25,7 @@ const CONFIG = {
 };
 ```
 
-- **BIRTHDAY_DATE**: before this date the hero shows a live countdown ("Your day is almost here, Nova Grace."). On the day and after, the countdown is skipped and a confetti burst plays when she enters.
+- The opening always plays a confetti burst when she enters (there is no countdown).
 - **PASSCODE**: the 8-digit code for the lock screen.
 - **MY_EMAIL**: the address her question is sent to (it opens her mail app with the subject "A question for you ✨").
 - **GALLERY_CAPTIONS**: captions for the 12 polaroids. Empty ones show "Add a caption", and she can also tap a caption to write her own (saved on her device).

@@ -216,13 +216,6 @@ body.is-open .music-btn { opacity: 1; pointer-events: auto; }
 .hero-foot { position: relative; z-index: 2; margin-top: 26px; display: flex; flex-direction: column; align-items: center; }
 .hero-sub { margin: 0; font-family: var(--serif); font-style: italic; font-size: 1.35rem; color: var(--ink-2); }
 .hero-sub::before, .hero-sub::after { content: "—"; color: var(--violet); margin: 0 .5em; font-style: normal; opacity: .7; }
-.countdown { margin: 22px auto 0; width: min(100%, 420px); }
-.cd-text { margin: 0 0 12px; font-size: .68rem; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); }
-.cd-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.cd-grid div { display: flex; flex-direction: column; align-items: center; padding: 12px 0 10px; }
-.cd-grid div + div { border-left: 1px solid var(--line); }
-.cd-grid span { font-family: var(--display); font-size: 2rem; line-height: 1.05; color: var(--ink); font-variant-numeric: tabular-nums; }
-.cd-grid small { font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
 .scroll-cue { display: inline-grid; place-items: center; width: 48px; height: 48px; margin-top: 22px; border-radius: 50%; color: var(--ink); text-decoration: none; }
 .scroll-cue svg { width: 26px; height: 26px; fill: currentColor; animation: bounce 2.2s ease-in-out infinite; }
 @keyframes bounce { 0%,100% { transform: translateY(0); opacity: .6; } 50% { transform: translateY(8px); opacity: 1; } }

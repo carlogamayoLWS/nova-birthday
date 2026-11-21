@@ -5,11 +5,6 @@
    Everything you normally need to change lives in this CONFIG object.
    ========================================================================= */
 const CONFIG = {
-  // Nova's birthday in YYYY-MM-DD format.
-  // ⚠️ PLACEHOLDER — change this to her real birthday!
-  // Before this date the hero shows a countdown; on/after it, confetti plays.
-  BIRTHDAY_DATE: "2026-12-31",
-
   // The 8-digit passcode for the lock screen (MMDDYYYY). 01242025 = January 24, 2025.
   PASSCODE: "01242025",
 
@@ -374,33 +369,13 @@ Good evening, love.`,
     return { tryAutoplay() { if (!missing) a.play().catch(() => {}); } };
   })();
 
-  /* ============================ HERO / COUNTDOWN ======================== */
-  function birthday() { const [y, m, d] = CONFIG.BIRTHDAY_DATE.split("-").map(Number); return new Date(y, (m || 1) - 1, d || 1, 0, 0, 0); }
-  function initCountdown() {
-    const target = birthday();
-    if (isNaN(target) || Date.now() >= target.getTime()) return false;
-    const box = $("#countdown"); box.hidden = false;
-    const els = { d: $("#cdD"), h: $("#cdH"), m: $("#cdM"), s: $("#cdS") };
-    const tick = () => {
-      let ms = target.getTime() - Date.now();
-      if (ms <= 0) { clearInterval(iv); box.hidden = true; fireConfetti("burst"); return; }
-      const s = Math.floor(ms / 1000);
-      els.d.textContent = String(Math.floor(s / 86400)).padStart(2, "0");
-      els.h.textContent = String(Math.floor((s % 86400) / 3600)).padStart(2, "0");
-      els.m.textContent = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
-      els.s.textContent = String(s % 60).padStart(2, "0");
-    };
-    const iv = setInterval(tick, 1000); tick();
-    return true;
-  }
-
+  /* ================================ HERO ================================ */
   function splitHeroName() {
     const el = $(".hero-name");
     el.innerHTML = el.textContent.split("").map((c) => `<span class="ch">${c}</span>`).join("");
   }
   function openingAnimation(animated) {
-    const counting = initCountdown();
-    const after = () => { if (!counting) fireConfetti("burst"); };
+    const after = () => fireConfetti("burst"); // always celebrate on entry
     if (!hasGSAP || reduceMotion || !animated) { setTimeout(after, 300); return; }
     Starfield.revealOneByOne();
     const tl = gsap.timeline({ delay: 0.15, defaults: { ease: "expo.out" } });
@@ -410,7 +385,7 @@ Good evening, love.`,
       .set(".hero-portrait", { clipPath: "inset(100% 0% 0% 0%)" })
       .set(".hero-portrait > *", { scale: 1.25 })
       .set(".nova", { scale: 0, opacity: 0 })
-      .set([".hero-sub", "#countdown", ".scroll-cue"], { opacity: 0, y: 24 })
+      .set([".hero-sub", ".scroll-cue"], { opacity: 0, y: 24 })
       .to(".hero-kicker", { opacity: 1, letterSpacing: "0.62em", duration: 2.2, ease: "power3.out" }, 0.5)
       .to(".hero-name .ch", { opacity: 1, yPercent: 0, rotateX: 0, filter: "blur(0px)", duration: 1.6, stagger: 0.07 }, 0.75)
       .to(".hero-portrait", { clipPath: "inset(0% 0% 0% 0%)", duration: 1.8, ease: "expo.inOut" }, 1.2)
@@ -419,7 +394,6 @@ Good evening, love.`,
       .to(".nova", { scale: 2.2, opacity: 1, duration: 0.45, ease: "power2.out" }, 2.5)
       .to(".nova", { scale: 1, duration: 1.4, ease: "elastic.out(1, .45)" }, 2.95)
       .to(".hero-sub", { opacity: 1, y: 0, duration: 1.2 }, 2.8)
-      .to("#countdown", { opacity: 1, y: 0, duration: 1.2 }, 3.0)
       .to(".scroll-cue", { opacity: 1, y: 0, duration: 1.2 }, 3.3)
       .add(after, 3.0);
   }
