@@ -268,7 +268,7 @@ body.is-open .music-btn { opacity: 1; pointer-events: auto; }
 .bl-card.open .bl-flap { transform: rotateX(180deg); }
 .bl-card.open .bl-seal { transform: scale(0) rotate(90deg); opacity: 0; pointer-events: none; }
 .bl-card.open .bl-envelope { height: 0; opacity: 0; }
-.bl-card.open .bl-paper { max-height: 2400px; padding: 32px 24px 28px; }
+.bl-card.open .bl-paper { max-height: 6000px; padding: 32px 24px 28px; }
 @media (prefers-reduced-motion: reduce) { .bl-card.open .bl-paper p { opacity: 1; } }
 
 
