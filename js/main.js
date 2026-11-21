@@ -182,7 +182,7 @@ Good evening, love.`,
   const hasST = hasGSAP && typeof window.ScrollTrigger !== "undefined";
   if (hasST) gsap.registerPlugin(ScrollTrigger);
   const STAR = '<svg viewBox="0 0 100 100" aria-hidden="true"><use href="#i-star4"/></svg>';
-  const PALETTE = ["#6D4AFF", "#8B6BE8", "#C9B8F5", "#E9DDFB", "#FFF6E9", "#FFD98E"];
+  const PALETTE = ["#6D4AFF", "#8B6BE8", "#C9B8F5", "#141218", "#E8B65C", "#EFE8FF"];
   const isDesktop = () => window.matchMedia("(min-width: 900px)").matches;
   if (!reduceMotion && hasGSAP) document.documentElement.classList.add("js-motion");
 
@@ -202,60 +202,73 @@ Good evening, love.`,
         if (Date.now() < end) requestAnimationFrame(frame);
       })();
       confetti({ ...base, particleCount: 200, spread: 160, startVelocity: 55, origin: { y: 0.5 } });
-      confetti({ ...base, particleCount: 70, spread: 360, startVelocity: 30, shapes: ["star"], colors: ["#FFD98E", "#FFF6E9", "#E9DDFB"], scalar: 1.4, origin: { y: 0.45 } });
+      confetti({ ...base, particleCount: 70, spread: 360, startVelocity: 30, shapes: ["star"], colors: ["#6D4AFF", "#E8B65C", "#C9B8F5"], scalar: 1.4, origin: { y: 0.45 } });
     }
   }
 
-  /* ============================== STARFIELD ============================== */
+  /* ===================== LIGHT SPARKLE BACKGROUND ====================== */
+  // Delicate 4-point sparkles + dots on the off-white page, with slow drift,
+  // scroll parallax and an occasional soft violet shooting streak.
   const Starfield = (() => {
     const cv = $("#starfield");
     const ctx = cv.getContext("2d");
-    let W = 0, H = 0, dpr = 1, stars = [], shooters = [], t0 = performance.now(), revealAt = -1, running = true, nextShoot = 4000;
-    const COLORS = ["255,255,255", "233,221,251", "201,184,245", "255,217,142"];
+    let W = 0, H = 0, dpr = 1, stars = [], shooters = [], t0 = performance.now(), revealAt = -1, running = true, nextShoot = 5000;
+    const COLORS = ["109,74,255", "139,107,232", "20,18,24", "232,182,92"];
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       W = window.innerWidth; H = window.innerHeight;
       cv.width = W * dpr; cv.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.min(Math.round((W * H) / (W < 700 ? 2300 : 3400)), 380);
-      stars = Array.from({ length: n }, () => ({
-        x: Math.random() * W, y: Math.random() * H * 1.5,
-        r: Math.random() < 0.08 ? 1.3 + Math.random() * 0.9 : 0.35 + Math.random() * 0.9,
-        a: 0.35 + Math.random() * 0.65, tw: 0.6 + Math.random() * 2.2, ph: Math.random() * 6.28,
-        d: 0.15 + Math.random() * 0.85, c: COLORS[Math.random() < 0.1 ? 3 : Math.floor(Math.random() * 3)],
-        delay: Math.random() * 2600,
-      }));
+      const n = Math.min(Math.round((W * H) / (W < 700 ? 9000 : 12000)), 140);
+      stars = Array.from({ length: n }, () => {
+        const sparkle = Math.random() < 0.22;
+        return {
+          x: Math.random() * W, y: Math.random() * H * 1.5,
+          r: sparkle ? 2.5 + Math.random() * 3.5 : 0.5 + Math.random() * 0.9,
+          sparkle, a: sparkle ? 0.25 + Math.random() * 0.35 : 0.12 + Math.random() * 0.25,
+          tw: 0.5 + Math.random() * 1.8, ph: Math.random() * 6.28, d: 0.15 + Math.random() * 0.85,
+          c: COLORS[Math.random() < 0.55 ? 0 : Math.random() < 0.6 ? 1 : Math.random() < 0.7 ? 2 : 3],
+          delay: Math.random() * 2400,
+        };
+      });
       if (reduceMotion) draw(performance.now());
+    }
+    function star4(x, y, r, alpha, c) {
+      ctx.fillStyle = `rgba(${c},${alpha})`;
+      ctx.beginPath();
+      ctx.moveTo(x, y - r);
+      ctx.quadraticCurveTo(x, y, x + r, y); ctx.quadraticCurveTo(x, y, x, y + r);
+      ctx.quadraticCurveTo(x, y, x - r, y); ctx.quadraticCurveTo(x, y, x, y - r);
+      ctx.fill();
     }
     function shoot() {
       const fromLeft = Math.random() < 0.5;
-      shooters.push({ x: fromLeft ? Math.random() * W * 0.5 : W * 0.5 + Math.random() * W * 0.5, y: Math.random() * H * 0.4, vx: (fromLeft ? 1 : -1) * (7 + Math.random() * 4), vy: 3 + Math.random() * 2, life: 0, max: 60 + Math.random() * 30 });
+      shooters.push({ x: fromLeft ? Math.random() * W * 0.4 : W * 0.6 + Math.random() * W * 0.4, y: Math.random() * H * 0.35, vx: (fromLeft ? 1 : -1) * (6 + Math.random() * 3), vy: 2.4 + Math.random() * 1.6, life: 0, max: 70 + Math.random() * 30 });
     }
     function draw(now) {
       const t = now - t0;
       ctx.clearRect(0, 0, W, H);
-      const sy = window.scrollY || 0;
-      const Hx = H * 1.5;
+      const sy = window.scrollY || 0, Hx = H * 1.5;
       for (const s of stars) {
         let vis = 1;
-        if (revealAt >= 0) { const k = (now - revealAt - s.delay) / 600; vis = k <= 0 ? 0 : Math.min(1, k); if (vis === 0) continue; }
-        let y = (s.y - sy * s.d * 0.12 - (reduceMotion ? 0 : t * 0.004 * s.d)) % Hx; if (y < 0) y += Hx;
-        if (y > H + 4) continue;
-        const tw = reduceMotion ? 1 : 0.55 + 0.45 * Math.sin(t * 0.001 * s.tw + s.ph);
+        if (revealAt >= 0) { const k = (now - revealAt - s.delay) / 700; vis = k <= 0 ? 0 : Math.min(1, k); if (vis === 0) continue; }
+        let y = (s.y - sy * s.d * 0.1 - (reduceMotion ? 0 : t * 0.003 * s.d)) % Hx; if (y < 0) y += Hx;
+        if (y > H + 8) continue;
+        const tw = reduceMotion ? 1 : 0.5 + 0.5 * Math.sin(t * 0.001 * s.tw + s.ph);
         const alpha = s.a * tw * vis;
-        ctx.beginPath(); ctx.fillStyle = `rgba(${s.c},${alpha})`; ctx.arc(s.x, y, s.r, 0, 6.283); ctx.fill();
-        if (s.r > 1.3) { ctx.beginPath(); ctx.fillStyle = `rgba(${s.c},${alpha * 0.18})`; ctx.arc(s.x, y, s.r * 3.2, 0, 6.283); ctx.fill(); }
+        if (s.sparkle) star4(s.x, y, s.r * (0.75 + 0.25 * tw), alpha, s.c);
+        else { ctx.beginPath(); ctx.fillStyle = `rgba(${s.c},${alpha})`; ctx.arc(s.x, y, s.r, 0, 6.283); ctx.fill(); }
       }
       if (!reduceMotion) {
-        if (t > nextShoot) { shoot(); nextShoot = t + 6000 + Math.random() * 9000; }
+        if (t > nextShoot) { shoot(); nextShoot = t + 9000 + Math.random() * 12000; }
         shooters = shooters.filter((m) => m.life < m.max);
         for (const m of shooters) {
           m.life++; m.x += m.vx; m.y += m.vy;
-          const fade = 1 - m.life / m.max;
-          const g = ctx.createLinearGradient(m.x, m.y, m.x - m.vx * 12, m.y - m.vy * 12);
-          g.addColorStop(0, `rgba(255,246,233,${fade})`); g.addColorStop(1, "rgba(255,246,233,0)");
-          ctx.strokeStyle = g; ctx.lineWidth = 1.6; ctx.lineCap = "round";
-          ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(m.x - m.vx * 12, m.y - m.vy * 12); ctx.stroke();
+          const fade = Math.sin((m.life / m.max) * Math.PI) * 0.55;
+          const g = ctx.createLinearGradient(m.x, m.y, m.x - m.vx * 14, m.y - m.vy * 14);
+          g.addColorStop(0, `rgba(109,74,255,${fade})`); g.addColorStop(1, "rgba(109,74,255,0)");
+          ctx.strokeStyle = g; ctx.lineWidth = 1.4; ctx.lineCap = "round";
+          ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(m.x - m.vx * 14, m.y - m.vy * 14); ctx.stroke();
         }
       }
     }
@@ -311,7 +324,7 @@ Good evening, love.`,
       hint.textContent = "";
       if (animated) {
         lock.classList.add("opening");
-        if (typeof window.confetti === "function") confetti({ particleCount: 90, spread: 360, startVelocity: 28, shapes: ["star"], colors: ["#FFD98E", "#FFF6E9", "#E9DDFB"], scalar: 1.1, origin: { y: 0.4 }, disableForReducedMotion: true, zIndex: 101 });
+        if (typeof window.confetti === "function") confetti({ particleCount: 90, spread: 360, startVelocity: 28, shapes: ["star"], colors: ["#6D4AFF", "#E8B65C", "#C9B8F5"], scalar: 1.1, origin: { y: 0.4 }, disableForReducedMotion: true, zIndex: 101 });
         setTimeout(() => { lock.hidden = true; }, 1300);
         setTimeout(() => App.enter(true), 650);
       } else { lock.hidden = true; App.enter(false); }
@@ -381,43 +394,67 @@ Good evening, love.`,
     return true;
   }
 
+  function splitHeroName() {
+    const el = $(".hero-name");
+    el.innerHTML = el.textContent.split("").map((c) => `<span class="ch">${c}</span>`).join("");
+  }
   function openingAnimation(animated) {
     const counting = initCountdown();
     const after = () => { if (!counting) fireConfetti("burst"); };
-    if (!hasGSAP || reduceMotion || !animated) { window.gsap?.set?.(".nova", { opacity: 0.9, scale: 1 }); setTimeout(after, 300); return; }
+    if (!hasGSAP || reduceMotion || !animated) { setTimeout(after, 300); return; }
     Starfield.revealOneByOne();
-    const tl = gsap.timeline({ delay: 0.2 });
-    tl.set([".hero-portrait", ".ht-line", ".hero-sub", "#countdown", ".scroll-cue"], { opacity: 0, y: 26 })
-      .to(".nova", { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" }, 1.6)
-      .to(".nova", { scale: 3.4, duration: 0.5, ease: "power2.in" }, 2.2)
-      .to(".nova", { scale: 1, opacity: 0.85, duration: 1.2, ease: "power3.out" }, 2.7)
-      .to(".hero-portrait", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 2.6)
-      .to(".ht-line", { opacity: 1, y: 0, duration: 1.1, stagger: 0.25, ease: "power3.out" }, 2.95)
-      .to(".hero-sub", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 3.5)
-      .to("#countdown", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 3.7)
-      .to(".scroll-cue", { opacity: 1, y: 0, duration: 1 }, 4)
-      .add(after, 3.2);
+    const tl = gsap.timeline({ delay: 0.15, defaults: { ease: "expo.out" } });
+    tl.set(".hero-kicker", { opacity: 0, letterSpacing: "0.15em" })
+      .set(".hero-name .ch", { opacity: 0, yPercent: 60, rotateX: -70, filter: "blur(12px)", transformOrigin: "50% 100%" })
+      .set(".hero-my", { clipPath: "inset(-20% 100% -20% 0)" })
+      .set(".hero-portrait", { clipPath: "inset(100% 0% 0% 0%)" })
+      .set(".hero-portrait > *", { scale: 1.25 })
+      .set(".nova", { scale: 0, opacity: 0 })
+      .set([".hero-sub", "#countdown", ".scroll-cue"], { opacity: 0, y: 24 })
+      .to(".hero-kicker", { opacity: 1, letterSpacing: "0.62em", duration: 2.2, ease: "power3.out" }, 0.5)
+      .to(".hero-name .ch", { opacity: 1, yPercent: 0, rotateX: 0, filter: "blur(0px)", duration: 1.6, stagger: 0.07 }, 0.75)
+      .to(".hero-portrait", { clipPath: "inset(0% 0% 0% 0%)", duration: 1.8, ease: "expo.inOut" }, 1.2)
+      .to(".hero-portrait > *", { scale: 1, duration: 2.2 }, 1.3)
+      .to(".hero-my", { clipPath: "inset(-20% -10% -20% 0)", duration: 1.5, ease: "power2.inOut" }, 2.1)
+      .to(".nova", { scale: 2.2, opacity: 1, duration: 0.45, ease: "power2.out" }, 2.5)
+      .to(".nova", { scale: 1, duration: 1.4, ease: "elastic.out(1, .45)" }, 2.95)
+      .to(".hero-sub", { opacity: 1, y: 0, duration: 1.2 }, 2.8)
+      .to("#countdown", { opacity: 1, y: 0, duration: 1.2 }, 3.0)
+      .to(".scroll-cue", { opacity: 1, y: 0, duration: 1.2 }, 3.3)
+      .add(after, 3.0);
   }
 
   /* ============================== REVEALS =============================== */
   function splitTitles() {
     $$(".title").forEach((t) => {
-      t.innerHTML = t.textContent.split(" ").map((w) => `<span class="w" style="display:inline-block">${w}</span>`).join(" ");
+      t.innerHTML = t.textContent.trim().split(/\s+/).map((w) => `<span class="w"><span>${w}</span></span>`).join(" ");
     });
   }
   function initScrollFx() {
     if (!hasST || reduceMotion) { $$(".reveal").forEach((e) => (e.style.opacity = 1)); return; }
     $$(".title.reveal").forEach((t) => t.classList.remove("reveal"));
     splitTitles();
+    // headings: words rise out of line masks
     $$(".title").forEach((t) => {
-      gsap.from(t.querySelectorAll(".w"), { opacity: 0, y: 26, rotateX: -40, duration: 0.9, stagger: 0.08, ease: "power3.out", scrollTrigger: { trigger: t, start: "top 88%", once: true } });
+      gsap.fromTo(t.querySelectorAll(".w > span"), { yPercent: 115 }, { yPercent: 0, duration: 1.3, stagger: 0.08, ease: "expo.out", scrollTrigger: { trigger: t, start: "top 90%", once: true } });
     });
+    // every other block: soft fade-and-rise
+    gsap.set(".reveal", { y: 36 });
     ScrollTrigger.batch(".reveal", {
       start: "top 90%", once: true,
-      onEnter: (b) => gsap.to(b, { opacity: 1, y: 0, duration: 1, stagger: 0.14, ease: "power3.out", overwrite: true }),
+      onEnter: (b) => gsap.to(b, { opacity: 1, y: 0, duration: 1.3, stagger: 0.12, ease: "expo.out", overwrite: true }),
     });
-    gsap.to(".hero-content", { yPercent: 18, opacity: 0.25, ease: "none", scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: true } });
-    gsap.to(".nova", { y: -80, ease: "none", scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: true } });
+    // hero parallax: name drifts slower than the portrait, kicker fades
+    const hs = { trigger: "#hero", start: "top top", end: "bottom top", scrub: 0.6 };
+    gsap.to(".hero-name", { yPercent: 28, ease: "none", scrollTrigger: hs });
+    gsap.to(".hero-my", { yPercent: -60, ease: "none", scrollTrigger: hs });
+    gsap.to(".hero-portrait-wrap", { y: -90, ease: "none", scrollTrigger: hs });
+    gsap.to(".hero-kicker", { y: 60, opacity: 0, ease: "none", scrollTrigger: hs });
+    gsap.to(".hero-foot", { y: -40, opacity: 0, ease: "none", scrollTrigger: { ...hs, start: "15% top" } });
+    // smooth section transitions: content settles in as each section enters
+    gsap.utils.toArray("main .section:not(.hero) > .wrap").forEach((w) => {
+      gsap.fromTo(w, { scale: 0.975, transformOrigin: "50% 0%" }, { scale: 1, ease: "none", scrollTrigger: { trigger: w.parentElement, start: "top bottom", end: "top 35%", scrub: 0.6 } });
+    });
     // Section 2: the two name cards slide in from opposite sides
     gsap.utils.toArray(".name-card").forEach((c, i) => { c.classList.remove("reveal"); gsap.fromTo(c, { opacity: 0, x: i ? 40 : -40, y: 20 }, { opacity: 1, x: 0, y: 0, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: c, start: "top 88%", once: true } }); });
     // Section 4: glowing line draws as you scroll; each star node lights up and reveals its card
@@ -430,8 +467,8 @@ Good evening, love.`,
         gsap.to(card, { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.1 });
       } });
     });
-    gsap.utils.toArray(".polaroid").forEach((p, i) => gsap.from(p, { opacity: 0, y: 50, rotate: 0, duration: 0.9, delay: (i % 4) * 0.08, ease: "power3.out", scrollTrigger: { trigger: p, start: "top 94%", once: true } }));
-    gsap.utils.toArray(".qcard").forEach((p, i) => gsap.from(p, { opacity: 0, y: 40, duration: 0.9, delay: (i % 3) * 0.1, ease: "power3.out", scrollTrigger: { trigger: p, start: "top 92%", once: true } }));
+    gsap.utils.toArray(".polaroid").forEach((p, i) => gsap.from(p, { opacity: 0, y: 60, rotate: 0, duration: 1.2, delay: (i % 4) * 0.08, ease: "expo.out", scrollTrigger: { trigger: p, start: "top 94%", once: true } }));
+    gsap.utils.toArray(".qcard").forEach((p, i) => gsap.from(p, { opacity: 0, y: 50, duration: 1.2, delay: (i % 4) * 0.08, ease: "expo.out", scrollTrigger: { trigger: p, start: "top 92%", once: true } }));
     gsap.utils.toArray(".envelope").forEach((p, i) => gsap.from(p, { opacity: 0, y: 40, rotate: i % 2 ? 4 : -4, duration: 0.9, delay: (i % 3) * 0.1, ease: "back.out(1.4)", scrollTrigger: { trigger: p, start: "top 94%", once: true } }));
   }
 
@@ -519,7 +556,7 @@ Good evening, love.`,
       const i = +c.dataset.i;
       if (!opened.has(i)) {
         opened.add(i);
-        prog.textContent = `${opened.size} of ${total} opened`;
+        prog.innerHTML = `<b>${opened.size}</b> of ${total} opened`;
         if (opened.size === total) {
           done.classList.add("show");
           if (typeof confetti === "function") confetti({ particleCount: 80, spread: 90, shapes: ["star", "circle"], colors: PALETTE, origin: { y: 0.6 }, disableForReducedMotion: true, zIndex: 90 });
@@ -554,7 +591,7 @@ Good evening, love.`,
       if (caught.size === pts.length) {
         setTimeout(() => {
           doneEl.classList.add("show"); Starfield.shoot(); sparkleAt(doneEl, 16);
-          if (typeof confetti === "function") { const r = doneEl.getBoundingClientRect(); confetti({ particleCount: 40, spread: 100, startVelocity: 20, shapes: ["star"], colors: ["#FFD98E", "#FFF6E9", "#E9DDFB"], scalar: 0.9, origin: { x: 0.5, y: (r.top + r.height / 2) / innerHeight }, disableForReducedMotion: true, zIndex: 90 }); }
+          if (typeof confetti === "function") { const r = doneEl.getBoundingClientRect(); confetti({ particleCount: 40, spread: 100, startVelocity: 20, shapes: ["star"], colors: ["#6D4AFF", "#E8B65C", "#C9B8F5"], scalar: 0.9, origin: { x: 0.5, y: (r.top + r.height / 2) / innerHeight }, disableForReducedMotion: true, zIndex: 90 }); }
         }, 1200);
       }
     });
@@ -746,8 +783,7 @@ Good evening, love.`,
     const btnPrev = $("#bookPrev"), btnNext = $("#bookNext"), btnFs = $("#bookFs"), arPrev = $("#bookArrowPrev"), arNext = $("#bookArrowNext");
     let pdf = null, total = 23, urls = [], pageEls = [], flip = null, mode = null, current = 0, rendering = null, coverDone = false;
     const ASPECT = 648 / 432;
-    const tilt = $("#bookTilt");
-
+    
     // soft, synthesized page-turn sound (no audio file needed)
     let actx = null;
     function pageSound() {
@@ -764,21 +800,6 @@ Good evening, love.`,
       } catch (e) {}
     }
 
-    // floating / tilting book: follows the mouse on desktop, device tilt on phones
-    let tiltOn = true;
-    function setTilt(rx, ry) { if (!reduceMotion && tiltOn) tilt.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`; }
-    viewport.addEventListener("pointermove", (e) => {
-      if (e.pointerType !== "mouse" || e.buttons) return;
-      const r = viewport.getBoundingClientRect();
-      setTilt(((e.clientY - r.top) / r.height - 0.5) * -4, ((e.clientX - r.left) / r.width - 0.5) * 5);
-    });
-    viewport.addEventListener("pointerleave", () => setTilt(0, 0));
-    viewport.addEventListener("pointerdown", () => { tiltOn = false; tilt.style.transform = "none"; });
-    window.addEventListener("pointerup", () => { setTimeout(() => (tiltOn = true), 400); });
-    window.addEventListener("deviceorientation", (e) => {
-      if (e.gamma == null || openEl.hidden || isDesktop()) return;
-      setTilt(Math.max(-3, Math.min(3, ((e.beta || 45) - 45) * -0.08)), Math.max(-4, Math.min(4, e.gamma * 0.12)));
-    }, { passive: true });
 
     function pdfReady() {
       if (pdf) return Promise.resolve(pdf);
@@ -851,6 +872,7 @@ Good evening, love.`,
         label = right > left ? `Pages ${left + 1}–${right + 1} of ${total}` : `Page ${left + 1} of ${total}`;
       } else label = `Page ${current + 1} of ${total}`;
       indicator.textContent = label;
+      holder.classList.toggle("at-cover", current === 0 || (spread && current >= total - 1 && total % 2 === 0));
       const atStart = current <= 0;
       const atEnd = spread ? current >= total - (total % 2 === 1 ? 2 : 1) : current >= total - 1;
       [btnPrev, arPrev].forEach((b) => (b.disabled = atStart));
@@ -891,6 +913,7 @@ Good evening, love.`,
           // keep late-rendered pages in sync
           pageEls.forEach((p, i) => { if (!p.firstChild) waitFill(i, els[i]); });
           flip.on("flip", (e) => { current = e.data; updateUI(); pageSound(); });
+          flip.on("changeState", (e) => { stage.dataset.flipState = e.data; });
           mode.api = { next: () => flip.flipNext(), prev: () => flip.flipPrev() };
           stage.dataset.engine = "stpageflip";
         } catch (err) {
@@ -994,12 +1017,9 @@ Good evening, love.`,
     }
     document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && stage.classList.contains("is-fs")) setFs(false); });
 
-    // tap the left / right edge of the page to turn (single-page mode)
-    holder.addEventListener("click", (e) => {
-      if (!mode || mode.spread || stage.dataset.engine !== "stpageflip") return;
-      const r = holder.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
-      if (x < 0.25) mode.api.prev(); else if (x > 0.75) mode.api.next();
-    });
+    // Tapping the left / right edge of a page is handled natively by StPageFlip
+    // (a tap on the right half turns forward, left half turns back), so no extra
+    // click handler here — adding one made a single tap turn two pages on phones.
     closed.addEventListener("click", open);
     [btnNext, arNext].forEach((b) => b.addEventListener("click", () => mode?.api?.next()));
     [btnPrev, arPrev].forEach((b) => b.addEventListener("click", () => mode?.api?.prev()));
@@ -1042,7 +1062,7 @@ Good evening, love.`,
   /* ================================ INIT ================================ */
   $$(".asset[data-src]").forEach((el) => { if (!el.closest("#galleryGrid")) initAsset(el); });
   initLetter(); initTimeline(); initQuestions(); initReasons(); initLetters(); initVerses(); initLyrics(); initGallery(); initPromises(); initWish(); initAsk(); initNav();
-  if (hasGSAP && !reduceMotion) gsap.set(".nova", { opacity: 0, scale: 0.2 }); else document.querySelector(".nova").style.opacity = 0.85;
+  splitHeroName();
   Lock.init();
   if (!window.St) console.info("[book] StPageFlip not available — the custom 3D CSS page-turn will be used.");
 })();

@@ -43,7 +43,7 @@ Use these exact file names. Anything missing shows a soft purple placeholder fra
 |---|---|
 | `book/maybe-you-never-asked.pdf` | Section 5, the flipbook (already included) |
 | `images/photo-01.jpg` … `images/photo-12.jpg` | Our little moments (gallery). photo-01 to photo-05 also fill the photo slots in the Our Story timeline |
-| `images/nova-portrait.jpg` | Optional round portrait in the hero |
+| `images/nova-portrait.jpg` | Optional portrait in the hero (arch frame behind "MY PALAGI"; portrait photo works best) |
 | `images/screenshot-streak.png` | Our Story timeline: "Day 10 of our streak · February 3, 2025" |
 | `images/screenshot-message.png` | Our Story timeline: "One of your messages · January 30, 2025" |
 | `audio/good-evening-love.mp3` | The song (music button and the Our Song player) |
@@ -81,6 +81,10 @@ Note: on a public site anyone with the link can see the files. The passcode is a
 - canvas-confetti 1.9.3
 - PDF.js 3.11.174 (renders each book page)
 - StPageFlip (`page-flip` 2.0.7) for the realistic page turns, with a custom 3D CSS page-turn fallback if it fails to load
-- Google Fonts: Cormorant Garamond, Inter, Caveat
+- Google Fonts: Anton (display), Cormorant Garamond (serif), Great Vibes (script accent), Inter, Caveat
+
+The hero title ("Happy Birthday, My Palagi") lives in `index.html` inside `#hero`.
+
+Note for editing CSS: never give `.flip-holder .page` / `.stf__item` a `position` other than absolute — StPageFlip positions pages itself while turning, and overriding it makes pages fall out of the spread mid-flip.
 
 All libraries load from CDNs with pinned versions. The site respects `prefers-reduced-motion`, uses `100dvh` and safe-area insets, and has a floating bottom nav on phones and a top bar on desktop.
