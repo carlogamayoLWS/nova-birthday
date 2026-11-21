@@ -48,7 +48,8 @@ Use these exact file names. Anything missing shows a soft purple placeholder fra
 | `images/nova-portrait.webp` (+ `.png`) | Hero photo of Nova (the WebP is used and preloaded; the PNG is the fallback). Use a **transparent-background PNG cutout** (current one is 433×577) — she stands in front of the big "PALAGI" with a soft glow and shadow, no frame. If the PNG is missing it tries `images/nova-portrait.jpg` (shown the same way); if neither exists, an arch placeholder is shown. Shown at about its natural size (max ~1.3×), so a bigger/taller cutout will look sharper. |
 | `audio/good-evening-love.mp3` | The song (music button and the Our Song player) |
 
-Gallery items are shown in portrait (9:16) polaroids; other shapes are cropped to fit. 
+Gallery items are shown in portrait (9:16) polaroids; other shapes are cropped to fit.
+
 ### Changing the book
 
 The site does not read the PDF at runtime (that was slow on phones). Instead each page is a pre-rendered image. After replacing `book/maybe-you-never-asked.pdf`, run this once from the repo folder (needs `pdftoppm` from poppler-utils and Python Pillow):

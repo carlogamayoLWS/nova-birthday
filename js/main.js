@@ -846,7 +846,9 @@ Good evening, love.`,
     let bgRunning = false;
     async function backgroundFill() {
       if (bgRunning) return; bgRunning = true;
-      for (let i = 0; i < total; i++) { if (!requested[i]) { await idle(); await request(i, "low"); } }
+      // 3 at a time: on slow mobile networks the round-trip, not the size, is the bottleneck
+      const worker = async () => { for (let i = 0; i < total; i++) { if (!requested[i]) { await idle(); await request(i, "low"); } } };
+      await Promise.all([worker(), worker(), worker()]);
       bgRunning = false;
     }
 
