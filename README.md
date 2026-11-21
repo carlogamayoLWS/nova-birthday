@@ -21,18 +21,18 @@ const CONFIG = {
   PASSCODE: "01242025",                 // lock-screen code (MMDDYYYY) = January 24, 2025
   MY_EMAIL: "your-email@example.com",   // ⚠️ your email, used by "Send to John Carlo"
   ...
-  GALLERY_CAPTIONS: ["", "", ...],      // optional captions for photo-01 … photo-12
+  GALLERY: [ { type: "photo", src: "images/photo-01.jpg" }, { type: "video", src: "videos/video-01.mp4", ... }, ... ],
 };
 ```
 
 - The opening always plays a confetti burst when she enters (there is no countdown).
 - **PASSCODE**: the 8-digit code for the lock screen.
 - **MY_EMAIL**: the address her question is sent to (it opens her mail app with the subject "A question for you ✨").
-- **GALLERY_CAPTIONS**: captions for the 12 polaroids. Empty ones show "Add a caption", and she can also tap a caption to write her own (saved on her device).
+- **GALLERY**: the items in "Our little moments", in order (no captions). Photos open in a lightbox when tapped. Videos autoplay **muted**, looping and inline (also on iPhone); there is no sound until she taps a video. Tapping a video marked `audio: true` turns its sound on (any other video is muted and the background song pauses while it plays), and tapping again mutes it. Videos without an audio track have `audio: false` and show no speaker icon. Off-screen videos pause to save battery and resume muted when scrolled back into view. To add one, drop `video-09.mp4` (+ a `video-09.jpg` poster) in `videos/` and add a line here.
 
 - **PAGE_TURN_SOUND**: `true`/`false` for the soft paper sound when a book page turns.
 
-The longer text on the site (timeline, the 19 question cards, the 8 reasons, the Open when letters, the verses, the song lyrics, and the promises) is in the `CONTENT` object right below `CONFIG`. The rest of the text is in `index.html`.
+The longer text on the site (the 19 question cards, the 8 reasons, the Open when letters, the verses, the song lyrics, and the promises) is in the `CONTENT` object right below `CONFIG`. The rest of the text is in `index.html`.
 
 ## 2. Where to put your files
 
@@ -41,13 +41,12 @@ Use these exact file names. Anything missing shows a soft purple placeholder fra
 | File | Used in |
 |---|---|
 | `book/maybe-you-never-asked.pdf` | Section 5, the flipbook (already included) |
-| `images/photo-01.jpg` … `images/photo-12.jpg` | Our little moments (gallery). photo-01 to photo-05 also fill the photo slots in the Our Story timeline |
+| `images/photo-01.jpg` | Our little moments: the photo (opens in a lightbox) |
+| `videos/video-01.mp4` … `videos/video-08.mp4` | Our little moments: the videos (H.264 MP4, portrait). Each has a poster image `videos/video-NN.jpg` shown before it starts |
 | `images/nova-portrait.png` | Hero photo of Nova. Use a **transparent-background PNG cutout** (current one is 433×577) — she stands in front of the big "PALAGI" with a soft glow and shadow, no frame. If the PNG is missing it tries `images/nova-portrait.jpg` (shown the same way); if neither exists, an arch placeholder is shown. Shown at about its natural size (max ~1.3×), so a bigger/taller cutout will look sharper. |
-| `images/screenshot-streak.png` | Our Story timeline: "Day 10 of our streak · February 3, 2025" |
-| `images/screenshot-message.png` | Our Story timeline: "One of your messages · January 30, 2025" |
 | `audio/good-evening-love.mp3` | The song (music button and the Our Song player) |
 
-Photos can be any size; they are cropped to fit. Square-ish photos look best in the polaroids. To use a different book, replace the PDF with one of the same name (any page count works).
+Gallery items are shown in portrait (9:16) polaroids; other shapes are cropped to fit. To use a different book, replace the PDF with one of the same name (any page count works).
 
 ## 3. Run it locally
 

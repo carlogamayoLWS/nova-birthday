@@ -15,11 +15,20 @@ const CONFIG = {
   // Paths (relative, so they work on GitHub Pages)
   BOOK_PDF: "book/maybe-you-never-asked.pdf",
   SONG: "audio/good-evening-love.mp3",
-  PHOTO_COUNT: 12, // images/photo-01.jpg ... photo-12.jpg
 
-  // Gallery captions (index 0 = photo-01). Leave "" to show "Add a caption".
-  // She can also tap a caption on the site to write her own (saved on her device).
-  GALLERY_CAPTIONS: ["", "", "", "", "", "", "", "", "", "", "", ""],
+  // "Our little moments": shown in this order. Videos autoplay muted & looping;
+  // tapping a video with sound (audio: true) unmutes it. The photo opens in a lightbox.
+  GALLERY: [
+    { type: "photo", src: "images/photo-01.jpg" },
+    { type: "video", src: "videos/video-01.mp4", poster: "videos/video-01.jpg", audio: false },
+    { type: "video", src: "videos/video-02.mp4", poster: "videos/video-02.jpg", audio: false },
+    { type: "video", src: "videos/video-03.mp4", poster: "videos/video-03.jpg", audio: false },
+    { type: "video", src: "videos/video-04.mp4", poster: "videos/video-04.jpg", audio: true },
+    { type: "video", src: "videos/video-05.mp4", poster: "videos/video-05.jpg", audio: false },
+    { type: "video", src: "videos/video-06.mp4", poster: "videos/video-06.jpg", audio: false },
+    { type: "video", src: "videos/video-07.mp4", poster: "videos/video-07.jpg", audio: false },
+    { type: "video", src: "videos/video-08.mp4", poster: "videos/video-08.jpg", audio: true },
+  ],
 
   // Soft paper sound when a book page turns (true / false).
   PAGE_TURN_SOUND: true,
@@ -30,16 +39,6 @@ const CONFIG = {
 
 /* ---------------------------- SITE CONTENT ----------------------------- */
 const CONTENT = {
-  // Section 4 — timeline. "head — text". photo: image shown in the card's photo slot.
-  timeline: [
-    { head: "January 24, 2025 · around 2 PM", text: "The first message. Out of everyone who saved or hearted my content on TikTok, you were the one I looked for. I messaged first.", photo: "images/photo-01.jpg" },
-    { head: "Are you in IT?", text: "You were. Boom. We ended up talking about the tech stacks we both use.", photo: "images/photo-02.jpg" },
-    { head: "The streak begins", text: "The conversation stayed consistent until, unexpectedly, we had a streak.", shot: "images/screenshot-streak.png", caption: "Day 10 of our streak · February 3, 2025" },
-    { head: "The frenny season", text: "Daily updates about our days. You were so genuine and so supportive. That is when I knew you were different.", shot: "images/screenshot-message.png", caption: "One of your messages · January 30, 2025" },
-    { head: "Our mornings with God", text: "Every morning we shared our daily devotion. His Word became the foundation of our friendship.", photo: "images/photo-03.jpg" },
-    { head: "The day I told you", text: "I was so nervous. I prayed for courage. And after I told you, we only grew closer.", photo: "images/photo-04.jpg" },
-    { head: "Today", text: "From frenny to love. Happy birthday, Nova Grace.", photo: "images/photo-05.jpg" },
-  ],
   // Section 6 — tap-to-reveal cards
   questions: [
     ["When and where did we meet?", "January 24, 2025, around 2 PM, on TikTok. Out of everyone who saved or hearted my content, you were the one I looked for."],
@@ -442,16 +441,6 @@ Good evening, love.`,
     });
     // Section 2: the two name cards slide in from opposite sides
     gsap.utils.toArray(".name-card").forEach((c, i) => { c.classList.remove("reveal"); gsap.fromTo(c, { opacity: 0, x: i ? 40 : -40, y: 20 }, { opacity: 1, x: 0, y: 0, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: c, start: "top 88%", once: true } }); });
-    // Section 4: glowing line draws as you scroll; each star node lights up and reveals its card
-    gsap.fromTo("#timelineList", { "--line": 0 }, { "--line": 1, ease: "none", scrollTrigger: { trigger: "#timelineList", start: "top 70%", end: "bottom 60%", scrub: true } });
-    gsap.utils.toArray(".tl-item").forEach((li) => {
-      const card = li.querySelector(".tl-card"), node = li.querySelector(".tl-node");
-      gsap.set(card, { opacity: 0, y: 40 }); gsap.set(node, { scale: 0.3, opacity: 0.4 });
-      ScrollTrigger.create({ trigger: li, start: "top 82%", once: true, onEnter: () => {
-        gsap.to(node, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(2)" }); li.classList.add("lit");
-        gsap.to(card, { opacity: 1, y: 0, duration: 1, ease: "power3.out", delay: 0.1 });
-      } });
-    });
     gsap.utils.toArray(".polaroid").forEach((p, i) => gsap.from(p, { opacity: 0, y: 60, rotate: 0, duration: 1.2, delay: (i % 4) * 0.08, ease: "expo.out", scrollTrigger: { trigger: p, start: "top 94%", once: true } }));
     gsap.utils.toArray(".qcard").forEach((p, i) => gsap.from(p, { opacity: 0, y: 50, duration: 1.2, delay: (i % 4) * 0.08, ease: "expo.out", scrollTrigger: { trigger: p, start: "top 92%", once: true } }));
     gsap.utils.toArray(".envelope").forEach((p, i) => gsap.from(p, { opacity: 0, y: 40, rotate: i % 2 ? 4 : -4, duration: 0.9, delay: (i % 3) * 0.1, ease: "back.out(1.4)", scrollTrigger: { trigger: p, start: "top 94%", once: true } }));
@@ -459,8 +448,8 @@ Good evening, love.`,
 
   /* ================================ NAV ================================= */
   function initNav() {
-    const groups = { hero: "hero", name: "hero", letter: "story", story: "story", book: "book", questions: "book", reasons: "book", openwhen: "book", verses: "song-section", "song-section": "song-section", gallery: "song-section", promises: "song-section", wish: "wish", ask: "wish" };
-    const topMap = { hero: "hero", name: "hero", letter: "letter", story: "story", book: "book", questions: "questions", reasons: "reasons", openwhen: "reasons", verses: "song-section", "song-section": "song-section", gallery: "gallery", promises: "gallery", wish: "wish", ask: "ask" };
+    const groups = { hero: "hero", name: "hero", letter: "hero", book: "book", questions: "book", reasons: "book", openwhen: "book", verses: "song-section", "song-section": "song-section", gallery: "gallery", promises: "gallery", wish: "wish", ask: "wish" };
+    const topMap = { hero: "hero", name: "hero", letter: "letter", book: "book", questions: "questions", reasons: "reasons", openwhen: "reasons", verses: "song-section", "song-section": "song-section", gallery: "gallery", promises: "gallery", wish: "wish", ask: "ask" };
     const io = new IntersectionObserver((ents) => {
       ents.forEach((en) => {
         if (!en.isIntersecting) return;
@@ -504,22 +493,6 @@ Good evening, love.`,
       } else paras.forEach((p) => (p.style.opacity = 1));
       setTimeout(() => hasST && ScrollTrigger.refresh(), 900);
     });
-  }
-
-  /* ============================= SECTION 4 ============================== */
-  function initTimeline() {
-    $("#timelineList").innerHTML = CONTENT.timeline.map((t, i) => `
-      <li class="tl-item">
-        <span class="tl-node">${STAR}</span>
-        <div class="glass tl-card">
-          ${t.shot
-            ? `<figure class="tl-shot"><div class="asset phone" data-src="${t.shot}" data-alt="${t.caption}"></div><figcaption>${t.caption}</figcaption></figure>`
-            : `<div class="asset tl-photo" data-src="${t.photo}" data-alt=""></div>`}
-          <h3>${t.head}</h3>
-          <p>${t.text}</p>
-        </div>
-      </li>`).join("");
-    $$("#timelineList .asset").forEach(initAsset);
   }
 
   /* ============================= SECTION 6 ============================== */
@@ -662,54 +635,94 @@ Good evening, love.`,
     });
   }
 
-  /* =============================== GALLERY ============================== */
+  /* =========================== OUR LITTLE MOMENTS ======================= */
+  // All videos autoplay muted + looping + inline (iOS-safe). No sound until tapped.
+  // Tapping a video with audio unmutes it (muting any other), pausing the background
+  // song while it plays with sound; tap again to mute (song resumes). Off-screen
+  // videos are paused and re-muted, and resume muted when they scroll back in.
   function initGallery() {
-    const grid = $("#galleryGrid");
-    const n = CONFIG.PHOTO_COUNT;
-    let saved = {};
-    try { saved = JSON.parse(localStorage.getItem("nova-captions") || "{}"); } catch (e) {}
-    const caps = Array.from({ length: n }, (_, i) => saved[i] ?? CONFIG.GALLERY_CAPTIONS[i] ?? "");
-    grid.innerHTML = Array.from({ length: n }, (_, i) => {
-      const num = String(i + 1).padStart(2, "0");
-      const rot = (((i * 37) % 9) - 4) * 0.9;
-      return `<figure class="polaroid" style="--rot:${rot}deg" data-i="${i}">
-        <div class="asset" data-src="images/photo-${num}.jpg" data-alt="Photo ${i + 1}" role="button" tabindex="0" aria-label="Open photo ${i + 1}"></div>
-        <figcaption class="pol-cap" contenteditable="true" spellcheck="false" data-placeholder="Add a caption" data-i="${i}">${caps[i].replace(/</g, "&lt;")}</figcaption>
-      </figure>`;
+    const grid = $("#galleryGrid"), items = CONFIG.GALLERY || [];
+    const SPK_OFF = '<svg class="ic-off" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Zm16.6 3 2.1-2.1-1.4-1.4-2.1 2.1-2.1-2.1-1.4 1.4 2.1 2.1-2.1 2.1 1.4 1.4 2.1-2.1 2.1 2.1 1.4-1.4-2.1-2.1Z"/></svg>';
+    const SPK_ON = '<svg class="ic-on" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Zm-2.5-8.8v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6Z"/></svg>';
+    grid.innerHTML = items.map((it, i) => {
+      const rot = (((i * 37) % 9) - 4) * 0.8;
+      if (it.type === "video") {
+        return `<figure class="polaroid is-video${it.audio ? "" : " silent"}" style="--rot:${rot}deg" data-i="${i}">
+          <div class="media"${it.audio ? ` role="button" tabindex="0" aria-pressed="false" aria-label="Turn on sound"` : ""}>
+            <video src="${it.src}" poster="${it.poster || ""}" autoplay muted loop playsinline webkit-playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-hidden="true"></video>
+            ${it.audio ? `<span class="vid-sound" aria-hidden="true">${SPK_OFF}${SPK_ON}</span>` : ""}
+          </div></figure>`;
+      }
+      return `<figure class="polaroid is-photo" style="--rot:${rot}deg" data-i="${i}">
+        <div class="media" role="button" tabindex="0" aria-label="Open photo"><img src="${it.src}" alt="" loading="lazy" decoding="async"></div></figure>`;
     }).join("");
-    $$(".asset", grid).forEach(initAsset);
-    grid.addEventListener("input", (e) => {
-      const c = e.target.closest(".pol-cap"); if (!c) return;
-      caps[+c.dataset.i] = c.textContent.trim();
-      const store = {}; caps.forEach((v, i) => { if (v !== (CONFIG.GALLERY_CAPTIONS[i] || "")) store[i] = v; });
-      try { localStorage.setItem("nova-captions", JSON.stringify(store)); } catch (er) {}
-    });
-    grid.addEventListener("keydown", (e) => { if (e.target.classList.contains("pol-cap") && e.key === "Enter") { e.preventDefault(); e.target.blur(); } });
 
-    // Lightbox
-    const lb = $("#lightbox"), media = $("#lbMedia"), cap = $("#lbCaption"), count = $("#lbCount");
+    const vids = $$("video", grid);
+    const song = $("#songAudio");
+    let songWasPlaying = false;
+    vids.forEach((v) => { v.muted = true; v.defaultMuted = true; v.playsInline = true; });
+    const tryPlay = (v) => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+
+    function setSound(v, on) {
+      const fig = v.closest(".polaroid"), btn = fig.querySelector(".media");
+      if (on) {
+        vids.forEach((o) => { if (o !== v && !o.muted) setSound(o, false); });
+        v.muted = false; tryPlay(v);
+        if (!song.paused) { songWasPlaying = true; song.pause(); }
+      } else {
+        v.muted = true;
+        if (songWasPlaying && !vids.some((o) => !o.muted)) { songWasPlaying = false; song.play().catch(() => {}); }
+      }
+      fig.classList.toggle("unmuted", on);
+      btn.setAttribute("aria-pressed", String(on)); btn.setAttribute("aria-label", on ? "Mute video" : "Turn on sound");
+    }
+    // If she starts the background song while a video has sound, mute the video.
+    song.addEventListener("play", () => { vids.forEach((o) => { if (!o.muted) { songWasPlaying = false; setSound(o, false); } }); });
+
+    grid.addEventListener("click", (e) => {
+      const fig = e.target.closest(".polaroid"); if (!fig) return;
+      if (fig.classList.contains("is-photo")) return openPhoto(+fig.dataset.i);
+      if (fig.classList.contains("silent")) return;
+      const v = fig.querySelector("video"); setSound(v, v.muted);
+    });
+    grid.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const m = e.target.closest(".media"); if (!m) return; e.preventDefault(); m.click();
+    });
+
+    // Pause off-screen videos (and re-mute them); resume muted when visible.
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((ents) => ents.forEach((en) => {
+        const v = en.target;
+        if (en.isIntersecting) tryPlay(v);
+        else { if (!v.muted) setSound(v, false); v.pause(); }
+      }), { rootMargin: "120px 0px" });
+      vids.forEach((v) => io.observe(v));
+    } else vids.forEach(tryPlay);
+    document.addEventListener("visibilitychange", () => { if (document.hidden) vids.forEach((v) => { if (!v.muted) setSound(v, false); }); });
+
+    // Lightbox (photos only)
+    const photos = items.map((it, i) => (it.type === "photo" ? i : -1)).filter((i) => i >= 0);
+    const lb = $("#lightbox"), media = $("#lbMedia"), count = $("#lbCount");
     let cur = 0;
-    function show(i) {
-      cur = (i + n) % n;
-      const num = String(cur + 1).padStart(2, "0");
-      media.innerHTML = `<div class="asset" data-src="images/photo-${num}.jpg" data-alt="Photo ${cur + 1}"></div>`;
-      const a = media.firstElementChild; initAsset(a); a.querySelector("img")?.removeAttribute("loading");
-      cap.textContent = caps[cur] || "";
-      count.textContent = `${cur + 1} / ${n}`;
+    lb.classList.toggle("single", photos.length < 2);
+    function show(k) {
+      cur = (k + photos.length) % photos.length;
+      media.innerHTML = `<img src="${items[photos[cur]].src}" alt="">`;
+      count.textContent = `${cur + 1} / ${photos.length}`;
       if (hasGSAP && !reduceMotion) gsap.fromTo(media, { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.4 });
     }
-    function open(i) { show(i); lb.hidden = false; document.body.style.overflow = "hidden"; $("#lbClose").focus(); }
+    function openPhoto(i) { show(Math.max(0, photos.indexOf(i))); lb.hidden = false; document.body.style.overflow = "hidden"; $("#lbClose").focus(); }
     function close() { lb.hidden = true; document.body.style.overflow = ""; }
-    grid.addEventListener("click", (e) => { const a = e.target.closest(".asset"); if (a) open(+a.closest(".polaroid").dataset.i); });
-    grid.addEventListener("keydown", (e) => { const a = e.target.closest(".asset"); if (a && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); open(+a.closest(".polaroid").dataset.i); } });
+    const step = (d) => { if (photos.length > 1) show(cur + d); };
     $("#lbClose").addEventListener("click", close);
-    $("#lbPrev").addEventListener("click", () => show(cur - 1));
-    $("#lbNext").addEventListener("click", () => show(cur + 1));
-    lb.addEventListener("click", (e) => { if (e.target === lb) close(); });
-    document.addEventListener("keydown", (e) => { if (lb.hidden) return; if (e.key === "Escape") close(); if (e.key === "ArrowLeft") show(cur - 1); if (e.key === "ArrowRight") show(cur + 1); });
+    $("#lbPrev").addEventListener("click", () => step(-1));
+    $("#lbNext").addEventListener("click", () => step(1));
+    lb.addEventListener("click", (e) => { if (e.target === lb || e.target === media) close(); });
+    document.addEventListener("keydown", (e) => { if (lb.hidden) return; if (e.key === "Escape") close(); if (e.key === "ArrowLeft") step(-1); if (e.key === "ArrowRight") step(1); });
     let sx = 0, sy = 0;
     lb.addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
-    lb.addEventListener("touchend", (e) => { const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(cur + (dx < 0 ? 1 : -1)); }, { passive: true });
+    lb.addEventListener("touchend", (e) => { const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1); }, { passive: true });
   }
 
   /* ============================== PROMISES ============================== */
@@ -1046,7 +1059,7 @@ Good evening, love.`,
 
   /* ================================ INIT ================================ */
   $$(".asset[data-src]").forEach((el) => { if (!el.closest("#galleryGrid")) initAsset(el); });
-  initLetter(); initTimeline(); initQuestions(); initReasons(); initLetters(); initVerses(); initLyrics(); initGallery(); initPromises(); initWish(); initAsk(); initNav();
+  initLetter(); initQuestions(); initReasons(); initLetters(); initVerses(); initLyrics(); initGallery(); initPromises(); initWish(); initAsk(); initNav();
   splitHeroName();
   Lock.init();
   if (!window.St) console.info("[book] StPageFlip not available — the custom 3D CSS page-turn will be used.");

@@ -49,14 +49,14 @@
   <header class="topbar" id="topbar">
     <a href="#hero" class="brand"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg><span>Nova Grace</span></a>
     <nav class="topnav" aria-label="Sections">
-      <a href="#hero">Home</a><a href="#letter">Letter</a><a href="#story">Our Story</a><a href="#book">The Book</a><a href="#questions">Questions</a><a href="#reasons">Reasons</a><a href="#song-section">Our Song</a><a href="#gallery">Moments</a><a href="#wish">Wish</a><a href="#ask">Ask Me</a>
+      <a href="#hero">Home</a><a href="#letter">Letter</a><a href="#book">The Book</a><a href="#questions">Questions</a><a href="#reasons">Reasons</a><a href="#song-section">Our Song</a><a href="#gallery">Moments</a><a href="#wish">Wish</a><a href="#ask">Ask Me</a>
     </nav>
   </header>
   <nav class="bottomnav" id="bottomnav" aria-label="Sections">
     <a href="#hero" class="active"><svg viewBox="0 0 24 24"><path d="M12 3.2 3 10.4V20a1 1 0 0 0 1 1h5v-6h6v6h5a1 1 0 0 0 1-1v-9.6L12 3.2Z"/></svg><span>Home</span></a>
-    <a href="#story"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.5 3 5 6.4 5c2 0 3.4 1.1 4.1 2.3h3c.7-1.2 2.1-2.3 4.1-2.3C21 5 23.1 8.5 21.6 11.8 19.5 16.4 12 21 12 21Z" transform="translate(0 -1)"/></svg><span>Story</span></a>
     <a href="#book"><svg viewBox="0 0 24 24"><path d="M3 5.5C5.5 4 8.6 4 12 6c3.4-2 6.5-2 9-.5V19c-2.5-1.4-5.6-1.4-9 .6-3.4-2-6.5-2-9-.6V5.5Zm8.2 1.9C8.7 6 6.6 5.9 4.6 6.6v10c2-.5 4.2-.3 6.6.9V7.4Z"/></svg><span>Book</span></a>
     <a href="#song-section"><svg viewBox="0 0 24 24"><path d="M9 17.5V5.8l11-2.3v11.7a3 3 0 1 1-1.8-2.7V7.4L10.8 9v8.5a3 3 0 1 1-1.8-2.7V17.5Z"/></svg><span>Song</span></a>
+    <a href="#gallery"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.5 3 5 6.4 5c2 0 3.4 1.1 4.1 2.3h3c.7-1.2 2.1-2.3 4.1-2.3C21 5 23.1 8.5 21.6 11.8 19.5 16.4 12 21 12 21Z" transform="translate(0 -1)"/></svg><span>Moments</span></a>
     <a href="#wish"><svg viewBox="0 0 100 100"><use href="#i-star4"/></svg><span>Wish</span></a>
   </nav>
 
@@ -129,14 +129,6 @@
             <p class="bl-sign">Yours,<br />John Carlo</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- ============ SECTION 4: OUR STORY (TIMELINE) ============ -->
-    <section id="story" class="section">
-      <div class="wrap">
-        <h2 class="title reveal">Our Story</h2>
-        <ol class="timeline" id="timelineList"></ol>
       </div>
     </section>
 
@@ -235,7 +227,7 @@
       </div>
     </section>
 
-    <!-- ============ SECTION 11: PHOTO GALLERY ============ -->
+    <!-- ============ SECTION 11: OUR LITTLE MOMENTS (photo + videos) ============ -->
     <section id="gallery" class="section">
       <div class="wrap">
         <h2 class="title reveal">Our little moments.</h2>
@@ -290,7 +282,7 @@
   <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
     <button type="button" class="lb-close" id="lbClose" aria-label="Close">✕</button>
     <button type="button" class="lb-nav prev" id="lbPrev" aria-label="Previous photo"><svg viewBox="0 0 24 24"><path d="M15.4 5.4 14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg></button>
-    <figure class="lb-figure"><div class="lb-media" id="lbMedia"></div><figcaption id="lbCaption"></figcaption></figure>
+    <figure class="lb-figure"><div class="lb-media" id="lbMedia"></div></figure>
     <button type="button" class="lb-nav next" id="lbNext" aria-label="Next photo"><svg viewBox="0 0 24 24"><path d="m8.6 18.6 1.4 1.4 8-8-8-8-1.4 1.4 6.6 6.6z"/></svg></button>
     <p class="lb-count" id="lbCount"></p>
   </div>
