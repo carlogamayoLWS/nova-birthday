@@ -13,21 +13,25 @@ const CONFIG = {
   MY_EMAIL: "your-email@example.com",
 
   // Paths (relative, so they work on GitHub Pages)
-  BOOK_PDF: "book/maybe-you-never-asked.pdf",
+  // The book is shown from pre-rendered page images (made from book/maybe-you-never-asked.pdf
+  // with tools/render_book.py): book/pages/p01-900.webp … p23-1400.webp.
+  BOOK_PAGES: 23,
+  BOOK_PAGES_DIR: "book/pages",
   SONG: "audio/good-evening-love.mp3",
 
-  // "Our little moments": shown in this order. Videos autoplay muted & looping;
+  // "Our little moments": shown in this order. Videos autoplay muted & looping
+  // (they only start downloading when scrolled near);
   // tapping a video with sound (audio: true) unmutes it. The photo opens in a lightbox.
   GALLERY: [
-    { type: "photo", src: "images/photo-01.jpg" },
-    { type: "video", src: "videos/video-01.mp4", poster: "videos/video-01.jpg", audio: false },
-    { type: "video", src: "videos/video-02.mp4", poster: "videos/video-02.jpg", audio: false },
-    { type: "video", src: "videos/video-03.mp4", poster: "videos/video-03.jpg", audio: false },
-    { type: "video", src: "videos/video-04.mp4", poster: "videos/video-04.jpg", audio: true },
-    { type: "video", src: "videos/video-05.mp4", poster: "videos/video-05.jpg", audio: false },
-    { type: "video", src: "videos/video-06.mp4", poster: "videos/video-06.jpg", audio: false },
-    { type: "video", src: "videos/video-07.mp4", poster: "videos/video-07.jpg", audio: false },
-    { type: "video", src: "videos/video-08.mp4", poster: "videos/video-08.jpg", audio: true },
+    { type: "photo", src: "images/photo-01.webp", thumb: "images/photo-01-thumb.webp" },
+    { type: "video", src: "videos/video-01.mp4", poster: "videos/video-01.webp", audio: false },
+    { type: "video", src: "videos/video-02.mp4", poster: "videos/video-02.webp", audio: false },
+    { type: "video", src: "videos/video-03.mp4", poster: "videos/video-03.webp", audio: false },
+    { type: "video", src: "videos/video-04.mp4", poster: "videos/video-04.webp", audio: true },
+    { type: "video", src: "videos/video-05.mp4", poster: "videos/video-05.webp", audio: false },
+    { type: "video", src: "videos/video-06.mp4", poster: "videos/video-06.webp", audio: false },
+    { type: "video", src: "videos/video-07.mp4", poster: "videos/video-07.webp", audio: false },
+    { type: "video", src: "videos/video-08.mp4", poster: "videos/video-08.webp", audio: true },
   ],
 
   // Soft paper sound when a book page turns (true / false).
@@ -649,12 +653,12 @@ Good evening, love.`,
       if (it.type === "video") {
         return `<figure class="polaroid is-video${it.audio ? "" : " silent"}" style="--rot:${rot}deg" data-i="${i}">
           <div class="media"${it.audio ? ` role="button" tabindex="0" aria-pressed="false" aria-label="Turn on sound"` : ""}>
-            <video src="${it.src}" poster="${it.poster || ""}" autoplay muted loop playsinline webkit-playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-hidden="true"></video>
+            <video data-src="${it.src}" data-poster="${it.poster || ""}" muted loop playsinline webkit-playsinline preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true"></video>
             ${it.audio ? `<span class="vid-sound" aria-hidden="true">${SPK_OFF}${SPK_ON}</span>` : ""}
           </div></figure>`;
       }
       return `<figure class="polaroid is-photo" style="--rot:${rot}deg" data-i="${i}">
-        <div class="media" role="button" tabindex="0" aria-label="Open photo"><img src="${it.src}" alt="" loading="lazy" decoding="async"></div></figure>`;
+        <div class="media" role="button" tabindex="0" aria-label="Open photo"><img src="${it.thumb || it.src}" alt="" loading="lazy" decoding="async" width="480" height="853"></div></figure>`;
     }).join("");
 
     const vids = $$("video", grid);
@@ -667,7 +671,7 @@ Good evening, love.`,
       const fig = v.closest(".polaroid"), btn = fig.querySelector(".media");
       if (on) {
         vids.forEach((o) => { if (o !== v && !o.muted) setSound(o, false); });
-        v.muted = false; tryPlay(v);
+        activate(v); v.muted = false; tryPlay(v);
         if (!song.paused) { songWasPlaying = true; song.pause(); }
       } else {
         v.muted = true;
@@ -690,15 +694,20 @@ Good evening, love.`,
       const m = e.target.closest(".media"); if (!m) return; e.preventDefault(); m.click();
     });
 
-    // Pause off-screen videos (and re-mute them); resume muted when visible.
+    // Lazy: the poster is fetched when the gallery gets close, the video itself only when it
+    // is about to be on screen; then it autoplays muted. Off-screen videos pause (and re-mute)
+    // and resume muted when visible again.
+    const activate = (v) => { if (v.dataset.src) { v.autoplay = true; v.preload = "auto"; v.src = v.dataset.src; v.removeAttribute("data-src"); } };
+    const showPoster = (v) => { if (v.dataset.poster) { v.poster = v.dataset.poster; v.removeAttribute("data-poster"); } };
     if ("IntersectionObserver" in window) {
+      const near = new IntersectionObserver((ents) => ents.forEach((en) => { if (en.isIntersecting) { showPoster(en.target); near.unobserve(en.target); } }), { rootMargin: "900px 0px" });
       const io = new IntersectionObserver((ents) => ents.forEach((en) => {
         const v = en.target;
-        if (en.isIntersecting) tryPlay(v);
-        else { if (!v.muted) setSound(v, false); v.pause(); }
-      }), { rootMargin: "120px 0px" });
-      vids.forEach((v) => io.observe(v));
-    } else vids.forEach(tryPlay);
+        if (en.isIntersecting) { showPoster(v); activate(v); tryPlay(v); }
+        else if (!v.dataset.src) { if (!v.muted) setSound(v, false); v.pause(); }
+      }), { rootMargin: "200px 0px" });
+      vids.forEach((v) => { near.observe(v); io.observe(v); });
+    } else vids.forEach((v) => { showPoster(v); activate(v); tryPlay(v); });
     document.addEventListener("visibilitychange", () => { if (document.hidden) vids.forEach((v) => { if (!v.muted) setSound(v, false); }); });
 
     // Lightbox (photos only)
@@ -779,7 +788,7 @@ Good evening, love.`,
     const stage = $("#bookStage"), closed = $("#bookClosed"), openEl = $("#bookOpen"), holder = $("#flipHolder"), viewport = $("#bookViewport");
     const loading = $("#bookLoading"), loadingText = $("#bookLoadingText"), indicator = $("#pageIndicator");
     const btnPrev = $("#bookPrev"), btnNext = $("#bookNext"), btnFs = $("#bookFs"), arPrev = $("#bookArrowPrev"), arNext = $("#bookArrowNext");
-    let pdf = null, total = 23, urls = [], pageEls = [], flip = null, mode = null, current = 0, rendering = null, coverDone = false;
+    let total = CONFIG.BOOK_PAGES || 23, pageEls = [], flip = null, mode = null, current = 0, coverDone = false;
     const ASPECT = 648 / 432;
     
     // soft, synthesized page-turn sound (no audio file needed)
@@ -799,53 +808,66 @@ Good evening, love.`,
     }
 
 
-    function pdfReady() {
-      if (pdf) return Promise.resolve(pdf);
-      if (!window.pdfjsLib) return Promise.reject(new Error("PDF.js failed to load"));
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-      return pdfjsLib.getDocument(CONFIG.BOOK_PDF).promise.then((d) => { pdf = d; total = d.numPages; return d; });
+    /* ---------- page images (pre-rendered, no PDF.js at runtime) ---------- */
+    // 900px-tall set for 1x screens, 1400px set when a page is shown taller than ~1000 device px.
+    const DIR = CONFIG.BOOK_PAGES_DIR || "book/pages";
+    const wantRes = (cssH) => (cssH * Math.min(window.devicePixelRatio || 1, 3) > 1000 ? 1400 : 900);
+    const estPageH = () => (isDesktop() ? Math.min(window.innerHeight * 0.72, 900) : Math.min(Math.min(window.innerWidth, 420) * ASPECT, window.innerHeight * 0.66));
+    let res = wantRes(estPageH());
+    const pageUrl = (i) => `${DIR}/p${String(i + 1).padStart(2, "0")}-${res}.webp`;
+    let loaded = [], requested = [], version = 0;
+    function resetPages() {
+      loaded = new Array(total).fill(false); requested = new Array(total).fill(false);
+      pageEls = Array.from({ length: total }, (_, i) => {
+        const d = document.createElement("div"); d.className = "page"; d.dataset.density = i === 0 || i === total - 1 ? "hard" : "soft"; d.dataset.i = i;
+        d.innerHTML = `<img alt="Page ${i + 1} of ${total}" draggable="false" decoding="async" width="600" height="900" />`;
+        return d;
+      });
     }
-    async function renderPage(n, targetW) {
-      const page = await pdf.getPage(n);
-      const vp1 = page.getViewport({ scale: 1 });
-      const scale = targetW / vp1.width;
-      const vp = page.getViewport({ scale });
-      const c = document.createElement("canvas");
-      c.width = Math.round(vp.width); c.height = Math.round(vp.height);
-      await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
-      return new Promise((res) => c.toBlob((b) => res(URL.createObjectURL(b)), "image/jpeg", 0.9));
+    resetPages();
+    function applySrc(i, url) {
+      pageEls[i].querySelector("img").setAttribute("src", url);
+      holder.querySelectorAll(`.page[data-i="${i}"] img`).forEach((im) => { if (im.getAttribute("src") !== url) im.src = url; });
+      version++;
     }
-    const renderW = () => Math.round(Math.min(Math.max((isDesktop() ? 460 : window.innerWidth) * Math.min(devicePixelRatio || 1, 2.5), 700), 1300));
+    function request(i, prio) {
+      if (i < 0 || i >= total || requested[i]) return Promise.resolve();
+      requested[i] = true;
+      const url = pageUrl(i), r0 = res;
+      return new Promise((done) => {
+        const im = new Image(); im.decoding = "async"; if (prio) im.fetchPriority = prio;
+        im.onload = im.onerror = () => { if (r0 === res) { loaded[i] = !!im.naturalWidth; applySrc(i, url); } done(); };
+        im.src = url;
+      });
+    }
+    // pages around the current one first, then the rest quietly in the background
+    function ensureAround(c) { for (let k = c - 2; k <= c + 5; k++) request(k, k <= c + 2 ? "high" : "auto"); }
+    const idle = () => new Promise((r) => (window.requestIdleCallback ? requestIdleCallback(() => r(), { timeout: 800 }) : setTimeout(r, 50)));
+    let bgRunning = false;
+    async function backgroundFill() {
+      if (bgRunning) return; bgRunning = true;
+      for (let i = 0; i < total; i++) { if (!requested[i]) { await idle(); await request(i, "low"); } }
+      bgRunning = false;
+    }
 
-    async function loadCover() {
+    // page-flip (StPageFlip) is only downloaded when the book is about to be used
+    let libP = null;
+    function loadLib() {
+      if (window.St || window.__forceCssBook) return Promise.resolve();
+      return libP || (libP = new Promise((done) => {
+        const sc = document.createElement("script");
+        sc.src = "https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"; sc.async = true;
+        sc.onload = sc.onerror = () => done(); document.head.appendChild(sc); setTimeout(done, 10000);
+      }));
+    }
+
+    function loadCover() {
       if (coverDone) return; coverDone = true;
-      try {
-        await pdfReady();
-        const u = await renderPage(1, 700);
-        $("#bookCover").innerHTML = `<img src="${u}" alt="Maybe You Never Asked — book cover" />`;
-      } catch (e) {
-        console.warn("[book] cover", e);
-        $("#bookCover").innerHTML = `<span style="font-family:var(--serif);font-size:1.6rem;text-align:center;padding:20px;color:var(--cream)">Maybe You Never Asked</span>`;
-      }
-    }
-
-    function renderAll() {
-      if (rendering) return rendering;
-      rendering = (async () => {
-        await pdfReady();
-        const w = renderW();
-        pageEls = Array.from({ length: total }, (_, i) => { const d = document.createElement("div"); d.className = "page"; d.dataset.density = i === 0 || i === total - 1 ? "hard" : "soft"; return d; });
-        urls = new Array(total);
-        for (let i = 1; i <= total; i++) {
-          const u = await renderPage(i, w);
-          urls[i - 1] = u;
-          pageEls[i - 1].innerHTML = `<img src="${u}" alt="Page ${i} of ${total}" draggable="false" />`;
-          loadingText.textContent = `${i} / ${total}`;
-          if (i === Math.min(4, total)) build(); // show the book as soon as the first pages are ready
-        }
-        if (!flip && !mode) build();
-      })();
-      return rendering;
+      request(0, "high").then(() => {
+        if (loaded[0]) $("#bookCover").innerHTML = `<img src="${pageUrl(0)}" alt="Maybe You Never Asked — book cover" width="600" height="900" />`;
+        else $("#bookCover").innerHTML = `<span style="font-family:var(--serif);font-size:1.6rem;text-align:center;padding:20px;color:var(--cream)">Maybe You Never Asked</span>`;
+        ensureAround(0); loadLib();
+      });
     }
 
     function computeSize() {
@@ -888,6 +910,8 @@ Good evening, love.`,
 
     function build() {
       const size = computeSize();
+      const r = wantRes(size.pageH);
+      if (r > res) { res = r; resetPages(); ensureAround(current); backgroundFill(); }
       // keep page elements alive across rebuilds (StPageFlip.destroy() removes them)
       destroyFlip();
       holder.style.width = (size.spread ? size.pageW * 2 : size.pageW) + "px";
@@ -899,7 +923,7 @@ Good evening, love.`,
       if (useStPageFlip) {
         try {
           const root = document.createElement("div"); holder.appendChild(root);
-          const els = pageEls.map((p) => { const c = p.cloneNode(true); return c; });
+          const els = pageEls.map((p) => p.cloneNode(true));
           els.forEach((e) => root.appendChild(e));
           flip = new St.PageFlip(root, {
             width: size.pageW, height: size.pageH, size: "fixed",
@@ -908,9 +932,7 @@ Good evening, love.`,
             drawShadow: true, startPage: Math.min(current, total - 1), showPageCorners: !reduceMotion,
           });
           flip.loadFromHTML(els);
-          // keep late-rendered pages in sync
-          pageEls.forEach((p, i) => { if (!p.firstChild) waitFill(i, els[i]); });
-          flip.on("flip", (e) => { current = e.data; updateUI(); pageSound(); });
+          flip.on("flip", (e) => { current = e.data; ensureAround(current); updateUI(); pageSound(); });
           flip.on("changeState", (e) => { stage.dataset.flipState = e.data; });
           mode.api = { next: () => flip.flipNext(), prev: () => flip.flipPrev() };
           stage.dataset.engine = "stpageflip";
@@ -921,9 +943,6 @@ Good evening, love.`,
       } else buildCss(size);
       loading.classList.add("done");
       updateUI();
-    }
-    function waitFill(i, el) {
-      const iv = setInterval(() => { if (pageEls[i].firstChild) { el.innerHTML = pageEls[i].innerHTML; clearInterval(iv); } }, 250);
     }
 
     /* ---------- custom 3D CSS page-turn fallback ---------- */
@@ -949,7 +968,7 @@ Good evening, love.`,
         if (target === current) return;
         busy = true;
         const leaf = document.createElement("div"); leaf.className = "cb-leaf"; leaf.style.width = size.pageW + "px";
-        const finish = () => { if (!busy) return; current = target; paint(); updateUI(); busy = false; };
+        const finish = () => { if (!busy) return; current = target; ensureAround(current); paint(); updateUI(); busy = false; };
         pageSound();
         if (reduceMotion) { finish(); return; }
         if (spread) {
@@ -979,7 +998,8 @@ Good evening, love.`,
       book.addEventListener("touchstart", (e) => (sx = e.touches[0].clientX), { passive: true });
       book.addEventListener("touchend", (e) => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) turn(dx < 0 ? 1 : -1); }, { passive: true });
       book.addEventListener("click", (e) => { const r = book.getBoundingClientRect(); turn(e.clientX > r.left + r.width / 2 ? 1 : -1); });
-      const filler = setInterval(() => { if (!busy) paint(); if (pageEls.every((p) => p.firstChild)) clearInterval(filler); }, 600);
+      let seen = version;
+      const filler = setInterval(() => { if (!busy && seen !== version) { seen = version; paint(); } if (loaded.every(Boolean) && seen === version) clearInterval(filler); }, 500);
       mode.css = { destroy: () => clearInterval(filler) };
       mode.api = { next: () => turn(1), prev: () => turn(-1) };
       paint();
@@ -988,10 +1008,8 @@ Good evening, love.`,
     function open() {
       closed.hidden = true; openEl.hidden = false;
       if (hasGSAP && !reduceMotion) gsap.from(openEl, { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" });
-      renderAll().catch((e) => {
-        console.error("[book]", e);
-        loadingText.innerHTML = location.protocol === "file:" ? "The book needs a local server to load.<br/>See the README ✨" : "The book could not be loaded. Check book/maybe-you-never-asked.pdf ✨";
-      });
+      loadCover(); ensureAround(current);
+      loadLib().then(() => { build(); backgroundFill(); });
       setTimeout(() => hasST && ScrollTrigger.refresh(), 900);
     }
     let rt = null, lastW = window.innerWidth, lastDesk = isDesktop();
@@ -1033,10 +1051,12 @@ Good evening, love.`,
     });
     return {
       warm() {
-        const io = new IntersectionObserver((en) => { if (en.some((x) => x.isIntersecting)) { io.disconnect(); loadCover(); } }, { rootMargin: "800px 0px" });
+        const io = new IntersectionObserver((en) => { if (en.some((x) => x.isIntersecting)) { io.disconnect(); loadCover(); } }, { rootMargin: "1200px 0px" });
         io.observe(stage);
+        // the cover is tiny: fetch it once the opening animation is done, so it is ready when she scrolls there
+        setTimeout(() => idle().then(loadCover), 4500);
       },
-      get state() { return { current, total, engine: stage.dataset.engine, spread: mode?.spread, rendered: urls.filter(Boolean).length }; },
+      get state() { return { current, total, engine: stage.dataset.engine, spread: mode?.spread, rendered: loaded.filter(Boolean).length, res }; },
       next: () => mode?.api?.next(), prev: () => mode?.api?.prev(),
     };
   })();
@@ -1062,5 +1082,4 @@ Good evening, love.`,
   initLetter(); initQuestions(); initReasons(); initLetters(); initVerses(); initLyrics(); initGallery(); initPromises(); initWish(); initAsk(); initNav();
   splitHeroName();
   Lock.init();
-  if (!window.St) console.info("[book] StPageFlip not available — the custom 3D CSS page-turn will be used.");
 })();

@@ -7,7 +7,9 @@ It is a static site (plain HTML, CSS, and JavaScript, no build step), so it work
 index.html              ← the whole single-page site
 css/style.css           ← design system + all styles (mobile first)
 js/main.js              ← CONFIG (top of file), site text, and all interactions
-book/maybe-you-never-asked.pdf   ← the book shown as the realistic flipbook
+book/maybe-you-never-asked.pdf   ← the original book (source of the page images)
+book/pages/             ← the book pages as images (pNN-900.webp / pNN-1400.webp), made by tools/render_book.py
+videos/                 ← gallery videos + their poster images
 images/                 ← drop photos & screenshots here
 audio/                  ← drop the song here
 ```
@@ -21,7 +23,7 @@ const CONFIG = {
   PASSCODE: "01242025",                 // lock-screen code (MMDDYYYY) = January 24, 2025
   MY_EMAIL: "your-email@example.com",   // ⚠️ your email, used by "Send to John Carlo"
   ...
-  GALLERY: [ { type: "photo", src: "images/photo-01.jpg" }, { type: "video", src: "videos/video-01.mp4", ... }, ... ],
+  GALLERY: [ { type: "photo", src: "images/photo-01.webp", thumb: "images/photo-01-thumb.webp" }, { type: "video", src: "videos/video-01.mp4", ... }, ... ],
 };
 ```
 
@@ -40,17 +42,26 @@ Use these exact file names. Anything missing shows a soft purple placeholder fra
 
 | File | Used in |
 |---|---|
-| `book/maybe-you-never-asked.pdf` | Section 5, the flipbook (already included) |
-| `images/photo-01.jpg` | Our little moments: the photo (opens in a lightbox) |
-| `videos/video-01.mp4` … `videos/video-08.mp4` | Our little moments: the videos (H.264 MP4, portrait). Each has a poster image `videos/video-NN.jpg` shown before it starts |
-| `images/nova-portrait.png` | Hero photo of Nova. Use a **transparent-background PNG cutout** (current one is 433×577) — she stands in front of the big "PALAGI" with a soft glow and shadow, no frame. If the PNG is missing it tries `images/nova-portrait.jpg` (shown the same way); if neither exists, an arch placeholder is shown. Shown at about its natural size (max ~1.3×), so a bigger/taller cutout will look sharper. |
+| `book/maybe-you-never-asked.pdf` | The original book. The flipbook shows the pre-rendered images in `book/pages/` (see "Changing the book" below) |
+| `images/photo-01.webp` + `images/photo-01-thumb.webp` | Our little moments: the photo (small version in the grid, full one in the lightbox) |
+| `videos/video-01.mp4` … `videos/video-08.mp4` | Our little moments: the videos (H.264 MP4, portrait). Each has a small poster image `videos/video-NN.webp` shown before it starts. Videos only download when scrolled near |
+| `images/nova-portrait.webp` (+ `.png`) | Hero photo of Nova (the WebP is used and preloaded; the PNG is the fallback). Use a **transparent-background PNG cutout** (current one is 433×577) — she stands in front of the big "PALAGI" with a soft glow and shadow, no frame. If the PNG is missing it tries `images/nova-portrait.jpg` (shown the same way); if neither exists, an arch placeholder is shown. Shown at about its natural size (max ~1.3×), so a bigger/taller cutout will look sharper. |
 | `audio/good-evening-love.mp3` | The song (music button and the Our Song player) |
 
-Gallery items are shown in portrait (9:16) polaroids; other shapes are cropped to fit. To use a different book, replace the PDF with one of the same name (any page count works).
+Gallery items are shown in portrait (9:16) polaroids; other shapes are cropped to fit. 
+### Changing the book
+
+The site does not read the PDF at runtime (that was slow on phones). Instead each page is a pre-rendered image. After replacing `book/maybe-you-never-asked.pdf`, run this once from the repo folder (needs `pdftoppm` from poppler-utils and Python Pillow):
+
+```bash
+python3 tools/render_book.py
+```
+
+It writes `book/pages/pNN-900.webp` (phones / normal screens) and `pNN-1400.webp` (retina / big screens). If the page count changed, set `BOOK_PAGES` in `CONFIG`. The site loads the cover first, then the next few pages, then the rest quietly in the background.
 
 ## 3. Run it locally
 
-The book is rendered with PDF.js, which **does not work when you double-click `index.html`** (browsers block `file://` loading). Start a tiny local server in this folder instead:
+Some features (the book and the gallery) work best from a local server rather than double-clicking `index.html`. Start a tiny local server in this folder:
 
 ```bash
 # option A (Python, usually already installed)
@@ -77,12 +88,11 @@ Note: on a public site anyone with the link can see the files. The passcode is a
 
 - GSAP 3.12.5 + ScrollTrigger (scroll animations)
 - canvas-confetti 1.9.3
-- PDF.js 3.11.174 (renders each book page)
-- StPageFlip (`page-flip` 2.0.7) for the realistic page turns, with a custom 3D CSS page-turn fallback if it fails to load
-- Google Fonts: Anton (display), Cormorant Garamond (serif), Great Vibes (script accent), Inter, Caveat
+- StPageFlip (`page-flip` 2.0.7) for the realistic page turns (loaded only when the book is near), with a custom 3D CSS page-turn fallback if it fails to load
+- Google Fonts: Anton (display), Cormorant Garamond (serif), Great Vibes (script accent), Inter
 
 The hero title ("Happy Birthday, My Palagi") lives in `index.html` inside `#hero`.
 
 Note for editing CSS: never give `.flip-holder .page` / `.stf__item` a `position` other than absolute — StPageFlip positions pages itself while turning, and overriding it makes pages fall out of the spread mid-flip.
 
-All libraries load from CDNs with pinned versions. The site respects `prefers-reduced-motion`, uses `100dvh` and safe-area insets, and has a floating bottom nav on phones and a top bar on desktop.
+All libraries load from CDNs with pinned versions and are deferred so the lock screen is ready quickly. The site respects `prefers-reduced-motion`, uses `100dvh` and safe-area insets, and has a floating bottom nav on phones and a top bar on desktop.
