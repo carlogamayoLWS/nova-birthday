@@ -109,7 +109,13 @@ const CONTENT = {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const hasGSAP = typeof window.gsap !== "undefined";
   const hasST = hasGSAP && typeof window.ScrollTrigger !== "undefined";
-  if (hasST) gsap.registerPlugin(ScrollTrigger);
+  if (hasST) {
+    gsap.registerPlugin(ScrollTrigger);
+    // Mobile: the URL bar showing/hiding fires "resize". Without this, ScrollTrigger refreshes
+    // mid-fling and restores the old scroll position, so the page stops and jumps back.
+    ScrollTrigger.config({ ignoreMobileResize: true, autoRefreshEvents: "visibilitychange,DOMContentLoaded,load" });
+  }
+  const isTouch = window.matchMedia("(hover: none), (pointer: coarse)").matches;
   const STAR = '<svg viewBox="0 0 100 100" aria-hidden="true"><use href="#i-star4"/></svg>';
   const PALETTE = ["#6D4AFF", "#8B6BE8", "#C9B8F5", "#141218", "#E8B65C", "#EFE8FF"];
   const isDesktop = () => window.matchMedia("(min-width: 900px)").matches;
@@ -143,9 +149,14 @@ const CONTENT = {
     const ctx = cv.getContext("2d");
     let W = 0, H = 0, dpr = 1, stars = [], shooters = [], t0 = performance.now(), revealAt = -1, running = true, nextShoot = 5000;
     const COLORS = ["109,74,255", "139,107,232", "20,18,24", "232,182,92"];
+    let lastW = 0;
     function resize() {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      W = window.innerWidth; H = window.innerHeight;
+      // height-only changes (mobile URL bar) don't rebuild the sky; the canvas is drawn 140px taller to cover it
+      if (lastW === window.innerWidth && W) return;
+      lastW = window.innerWidth;
+      dpr = Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2);
+      W = window.innerWidth; H = window.innerHeight + (isTouch ? 140 : 0);
+      cv.style.height = H + "px";
       cv.width = W * dpr; cv.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const n = Math.min(Math.round((W * H) / (W < 700 ? 9000 : 12000)), 140);
@@ -362,16 +373,17 @@ const CONTENT = {
       start: "top 90%", once: true,
       onEnter: (b) => gsap.to(b, { opacity: 1, y: 0, duration: 1.3, stagger: 0.12, ease: "expo.out", overwrite: true }),
     });
-    // hero parallax: name drifts slower than the portrait, kicker fades
+    // hero parallax: name drifts up a little faster than the portrait, kicker fades
     const hs = { trigger: "#hero", start: "top top", end: "bottom top", scrub: 0.6 };
-    gsap.to(".hero-name", { yPercent: 28, ease: "none", scrollTrigger: hs });
-    gsap.to(".hero-my", { yPercent: -60, ease: "none", scrollTrigger: hs });
-    gsap.to(".hero-portrait-wrap", { y: -90, ease: "none", scrollTrigger: hs });
+    // (directions chosen so she never slides further over the letters while scrolling)
+    gsap.to(".hero-name", { yPercent: -14, ease: "none", scrollTrigger: hs });
+    gsap.to(".hero-my", { yPercent: -50, ease: "none", scrollTrigger: hs });
+    gsap.to(".hero-portrait-wrap", { y: 40, ease: "none", scrollTrigger: hs });
     gsap.to(".hero-glow", { scale: 1.25, opacity: 0.4, ease: "none", scrollTrigger: hs });
     gsap.to(".hero-kicker", { y: 60, opacity: 0, ease: "none", scrollTrigger: hs });
     gsap.to(".hero-foot", { y: -40, opacity: 0, ease: "none", scrollTrigger: { ...hs, start: "15% top" } });
     // smooth section transitions: content settles in as each section enters
-    gsap.utils.toArray("main .section:not(.hero) > .wrap").forEach((w) => {
+    if (!isTouch) gsap.utils.toArray("main .section:not(.hero) > .wrap").forEach((w) => {
       gsap.fromTo(w, { scale: 0.975, transformOrigin: "50% 0%" }, { scale: 1, ease: "none", scrollTrigger: { trigger: w.parentElement, start: "top bottom", end: "top 35%", scrub: 0.6 } });
     });
     // Section 2: the two name cards slide in from opposite sides
@@ -540,7 +552,8 @@ const CONTENT = {
     let sx = 0;
     slider.addEventListener("touchstart", (e) => (sx = e.touches[0].clientX), { passive: true });
     slider.addEventListener("touchend", (e) => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) { go(cur + (dx < 0 ? 1 : -1)); start(); } }, { passive: true });
-    window.addEventListener("resize", size, { passive: true });
+    let vw = window.innerWidth;
+    window.addEventListener("resize", () => { if (window.innerWidth !== vw) { vw = window.innerWidth; size(); } }, { passive: true });
     document.fonts?.ready.then(size); size(); start();
   }
 
@@ -794,6 +807,27 @@ const CONTENT = {
       [btnNext, arNext].forEach((b) => (b.disabled = atEnd));
     }
 
+    // Phones: page-flip's own touch handling either blocks page scrolling when a swipe starts on the
+    // book, or (with mobileScrollSupport) starts a corner-fold mid-scroll and cancels it, plus it adds a
+    // non-passive touchmove listener on window that makes every scroll wait for JS. So on touch devices
+    // the library never sees touches: vertical swipes scroll the page natively (touch-action: pan-y),
+    // horizontal swipes turn the page (passive listeners below), and taps still turn via the
+    // browser's emulated mouse click, which page-flip handles.
+    function detachFlipTouch() {
+      try { const ui = flip.getUI(); window.removeEventListener("touchmove", ui.onTouchMove); window.removeEventListener("touchend", ui.onTouchEnd); } catch (e) {}
+    }
+    if (isTouch) {
+      let tx = 0, ty = 0, tt = 0;
+      holder.addEventListener("touchstart", (e) => {
+        const t = e.touches[0]; tx = t.clientX; ty = t.clientY; tt = Date.now();
+        if (flip) e.stopPropagation(); // keep page-flip's touch handler out (see above)
+      }, { capture: true, passive: true });
+      holder.addEventListener("touchend", (e) => {
+        if (!flip) return;
+        const t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5 && Date.now() - tt < 800) { if (dx < 0) flip.flipNext(); else flip.flipPrev(); }
+      }, { passive: true });
+    }
     function destroyFlip() {
       if (flip) {
         try { flip.destroy(); } catch (e) {}
@@ -823,10 +857,11 @@ const CONTENT = {
           flip = new St.PageFlip(root, {
             width: size.pageW, height: size.pageH, size: "fixed",
             showCover: true, usePortrait: !size.spread, autoSize: false,
-            maxShadowOpacity: 0.55, flippingTime: reduceMotion ? 1 : 850, mobileScrollSupport: false,
+            maxShadowOpacity: 0.55, flippingTime: reduceMotion ? 1 : 850, mobileScrollSupport: true,
             drawShadow: true, startPage: Math.min(current, total - 1), showPageCorners: !reduceMotion,
           });
           flip.loadFromHTML(els);
+          if (isTouch) detachFlipTouch();
           flip.on("flip", (e) => { current = e.data; ensureAround(current); updateUI(); pageSound(); });
           flip.on("changeState", (e) => { stage.dataset.flipState = e.data; });
           mode.api = { next: () => flip.flipNext(), prev: () => flip.flipPrev() };
