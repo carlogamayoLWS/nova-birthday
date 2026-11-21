@@ -21,7 +21,6 @@ Open `js/main.js`. The very first thing in the file is the `CONFIG` object:
 ```js
 const CONFIG = {
   PASSCODE: "01242025",                 // lock-screen code (MMDDYYYY) = January 24, 2025
-  MY_EMAIL: "your-email@example.com",   // ⚠️ your email, used by "Send to John Carlo"
   ...
   GALLERY: [ { type: "photo", src: "images/photo-01.webp", thumb: "images/photo-01-thumb.webp" }, { type: "video", src: "videos/video-01.mp4", ... }, ... ],
 };
@@ -29,12 +28,11 @@ const CONFIG = {
 
 - The opening always plays a confetti burst when she enters (there is no countdown).
 - **PASSCODE**: the 8-digit code for the lock screen.
-- **MY_EMAIL**: the address her question is sent to (it opens her mail app with the subject "A question for you ✨").
 - **GALLERY**: the items in "Our little moments", in order (no captions). Photos open in a lightbox when tapped. Videos autoplay **muted**, looping and inline (also on iPhone); there is no sound until she taps a video. Tapping a video marked `audio: true` turns its sound on (any other video is muted and the background song pauses while it plays), and tapping again mutes it. Videos without an audio track have `audio: false` and show no speaker icon. Off-screen videos pause to save battery and resume muted when scrolled back into view. To add one, drop `video-09.mp4` (+ a `video-09.jpg` poster) in `videos/` and add a line here.
 
 - **PAGE_TURN_SOUND**: `true`/`false` for the soft paper sound when a book page turns.
 
-The longer text on the site (the 19 question cards, the 8 reasons, the Open when letters, the verses, the song lyrics, and the promises) is in the `CONTENT` object right below `CONFIG`. The rest of the text is in `index.html`.
+The longer text on the site (the 19 question cards, the 8 reasons, the Open when letters, the verses, and the promises) is in the `CONTENT` object right below `CONFIG`. The rest of the text is in `index.html`.
 
 ## 2. Where to put your files
 
@@ -46,7 +44,7 @@ Use these exact file names. Anything missing shows a soft purple placeholder fra
 | `images/photo-01.webp` + `images/photo-01-thumb.webp` | Our little moments: the photo (small version in the grid, full one in the lightbox) |
 | `videos/video-01.mp4` … `videos/video-08.mp4` | Our little moments: the videos (H.264 MP4, portrait). Each has a small poster image `videos/video-NN.webp` shown before it starts. Videos only download when scrolled near |
 | `images/nova-portrait.webp` (+ `.png`) | Hero photo of Nova (the WebP is used and preloaded; the PNG is the fallback). Use a **transparent-background PNG cutout** (current one is 433×577) — she stands in front of the big "PALAGI" with a soft glow and shadow, no frame. If the PNG is missing it tries `images/nova-portrait.jpg` (shown the same way); if neither exists, an arch placeholder is shown. Shown at about its natural size (max ~1.3×), so a bigger/taller cutout will look sharper. |
-| `audio/good-evening-love.mp3` | The song (music button and the Our Song player) |
+| `audio/maybe-you-never-asked.mp3` | The song "Maybe You Never Asked" (music button and the Our Song player). It is only downloaded when it starts playing |
 
 Gallery items are shown in portrait (9:16) polaroids; other shapes are cropped to fit.
 

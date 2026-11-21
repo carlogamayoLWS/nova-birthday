@@ -8,16 +8,12 @@ const CONFIG = {
   // The 8-digit passcode for the lock screen (MMDDYYYY). 01242025 = January 24, 2025.
   PASSCODE: "01242025",
 
-  // Where "Send to John Carlo" sends her question (opens her mail app).
-  // ⚠️ PLACEHOLDER — put your real email address here.
-  MY_EMAIL: "your-email@example.com",
-
   // Paths (relative, so they work on GitHub Pages)
   // The book is shown from pre-rendered page images (made from book/maybe-you-never-asked.pdf
   // with tools/render_book.py): book/pages/p01-900.webp … p23-1400.webp.
   BOOK_PAGES: 23,
   BOOK_PAGES_DIR: "book/pages",
-  SONG: "audio/good-evening-love.mp3",
+  SONG: "audio/maybe-you-never-asked.mp3", // the audio tag in index.html uses this file
 
   // "Our little moments": shown in this order. Videos autoplay muted & looping
   // (they only start downloading when scrolled near);
@@ -92,71 +88,6 @@ const CONTENT = {
     { text: "In every thing give thanks: for this is the will of God in Christ Jesus concerning you.", ref: "1 Thessalonians 5:18 KJV", note: "And so, in every thing, I thank Him for you." },
     { text: "The LORD bless thee, and keep thee: The LORD make his face shine upon thee, and be gracious unto thee: The LORD lift up his countenance upon thee, and give thee peace.", ref: "Numbers 6:24-26 KJV", note: "My birthday prayer for you." },
   ],
-  // Section 10 — complete lyrics. "[Chorus - repeat]" repeats the Chorus lines.
-  lyrics: `[Verse 1]
-Friday afternoon, around two,
-I sent a message to someone new.
-Out of all the hearts that came and went,
-You were the one I meant.
-"Are you in IT?" I typed with a grin,
-"I am," you said, and the talk poured in,
-Tech stacks and tools, and the day went by,
-Then a tiny flame lit up our night.
-
-[Pre-Chorus]
-Frenny was all that we said,
-Just good evenings and the words we read,
-But a little flame on a little screen
-Was holding the best thing I've ever seen.
-
-[Chorus]
-Good evening, love, good evening, love,
-Once you were frenny, now you're all I'm thinking of.
-Nova, a new star lighting up my sky,
-Grace, a gift from God, and I don't need to ask why.
-Maybe you never asked, so I'll say it right now:
-I fell in love with you, and I'll show you how.
-
-[Verse 2]
-Every morning, we opened the Word,
-Two voices sharing what we heard,
-Nobody told us where to start,
-But He built the floor beneath our hearts.
-I asked Him, "Lord, is this real, or just a phase?"
-He answered me through all our days.
-I prayed for courage, my heart was racing,
-I braced myself for you to go,
-But you stayed, and love began to grow.
-
-[Pre-Chorus]
-Frenny was the name before,
-Now love is the word I'm living for,
-And that little flame on that little screen
-Was the start of everything.
-
-[Chorus - repeat]
-
-[Bridge]
-So if you ask me how long, I'll say for life,
-Through the heavy seasons, through the quiet nights,
-Through the days you're lost, through the days you're tired,
-I will choose you, again and again.
-And you know what's beautiful?
-Read the first word.
-You.
-
-[Final Chorus]
-Good evening, love, good evening, love,
-Frenny turned to my whole world, my everything.
-Nova Grace, my star, my prayer, my plan,
-I'll hold your hand as long as I can.
-Maybe you never asked, but I answered anyway,
-I'll choose you, love, every single day.
-
-[Outro]
-Maybe you never asked,
-So I wrote it all down.
-Good evening, love.`,
   promises: [
     "I promise to choose you on the easy days and on the hard ones.",
     "I promise to tell you the truth, even when it is uncomfortable.",
@@ -452,8 +383,8 @@ Good evening, love.`,
 
   /* ================================ NAV ================================= */
   function initNav() {
-    const groups = { hero: "hero", name: "hero", letter: "hero", book: "book", questions: "book", reasons: "book", openwhen: "book", verses: "song-section", "song-section": "song-section", gallery: "gallery", promises: "gallery", wish: "wish", ask: "wish" };
-    const topMap = { hero: "hero", name: "hero", letter: "letter", book: "book", questions: "questions", reasons: "reasons", openwhen: "reasons", verses: "song-section", "song-section": "song-section", gallery: "gallery", promises: "gallery", wish: "wish", ask: "ask" };
+    const groups = { hero: "hero", name: "hero", letter: "hero", book: "book", questions: "book", reasons: "book", openwhen: "book", verses: "song-section", "song-section": "song-section", gallery: "gallery", promises: "gallery", wish: "wish" };
+    const topMap = { hero: "hero", name: "hero", letter: "letter", book: "book", questions: "questions", reasons: "reasons", openwhen: "reasons", verses: "song-section", "song-section": "song-section", gallery: "gallery", promises: "gallery", wish: "wish" };
     const io = new IntersectionObserver((ents) => {
       ents.forEach((en) => {
         if (!en.isIntersecting) return;
@@ -613,32 +544,6 @@ Good evening, love.`,
     document.fonts?.ready.then(size); size(); start();
   }
 
-  /* ============================= SECTION 10 ============================= */
-  function initLyrics() {
-    const box = $("#lyrics");
-    const blocks = CONTENT.lyrics.trim().split(/\n\s*\n/);
-    const chorus = (blocks.find((b) => b.startsWith("[Chorus]")) || "").split("\n").slice(1);
-    let html = "";
-    blocks.forEach((b) => {
-      const lines = b.split("\n");
-      const label = lines[0].replace(/^\[|\]$/g, "");
-      const body = /repeat/i.test(label) ? chorus : lines.slice(1);
-      html += `<div class="ly-block"><h4>${label}</h4>${body.map((l) => `<p class="ly">${l}</p>`).join("")}</div>`;
-    });
-    box.innerHTML = html;
-    // karaoke-style highlight: no timestamps, so lines follow the song's progress evenly
-    const lines = $$(".ly", box), a = $("#songAudio");
-    let last = -1;
-    a.addEventListener("timeupdate", () => {
-      if (!a.duration) return;
-      const idx = Math.min(lines.length - 1, Math.floor((a.currentTime / a.duration) * lines.length));
-      if (idx === last) return;
-      lines[last]?.classList.remove("on"); lines[idx].classList.add("on"); last = idx;
-      const target = lines[idx].offsetTop - box.clientHeight / 2 + lines[idx].offsetHeight / 2;
-      box.scrollTo({ top: target, behavior: reduceMotion ? "auto" : "smooth" });
-    });
-  }
-
   /* =========================== OUR LITTLE MOMENTS ======================= */
   // All videos autoplay muted + looping + inline (iOS-safe). No sound until tapped.
   // Tapping a video with audio unmutes it (muting any other), pausing the background
@@ -769,18 +674,6 @@ Good evening, love.`,
     star.addEventListener("pointerleave", () => { clearTimeout(holdTimer); star.classList.remove("holding"); });
     star.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); wish(); } });
     star.addEventListener("contextmenu", (e) => e.preventDefault());
-  }
-
-  /* ================================ ASK ================================= */
-  function initAsk() {
-    const f = $("#askForm"), t = $("#askInput");
-    f.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const q = t.value.trim();
-      if (!q) { t.classList.remove("shake"); void t.offsetWidth; t.classList.add("shake"); t.focus(); return; }
-      const href = `mailto:${CONFIG.MY_EMAIL}?subject=${encodeURIComponent("A question for you ✨")}&body=${encodeURIComponent(q)}`;
-      window.location.href = href;
-    });
   }
 
   /* ================================ BOOK ================================ */
@@ -1081,7 +974,7 @@ Good evening, love.`,
 
   /* ================================ INIT ================================ */
   $$(".asset[data-src]").forEach((el) => { if (!el.closest("#galleryGrid")) initAsset(el); });
-  initLetter(); initQuestions(); initReasons(); initLetters(); initVerses(); initLyrics(); initGallery(); initPromises(); initWish(); initAsk(); initNav();
+  initLetter(); initQuestions(); initReasons(); initLetters(); initVerses(); initGallery(); initPromises(); initWish(); initNav();
   splitHeroName();
   Lock.init();
 })();

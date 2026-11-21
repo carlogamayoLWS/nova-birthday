@@ -414,7 +414,7 @@ body.book-fs .bottomnav, body.book-fs .music-btn { opacity: 0; pointer-events: n
    SECTION 10 — SONG
    ========================================================= */
 .player { display: flex; flex-direction: column; align-items: center; gap: 22px; padding: 30px 22px; max-width: 520px; margin: 0 auto 22px; text-align: center; background: var(--white); }
-.vinyl { width: 170px; height: 170px; border-radius: 50%; background: repeating-radial-gradient(circle, #17141c 0 2px, #221e29 2px 4px); box-shadow: 0 24px 50px rgba(20,18,24,.25); display: grid; place-items: center; animation: spin 6s linear infinite; animation-play-state: paused; }
+.vinyl { flex-shrink: 0; width: 170px; height: 170px; border-radius: 50%; background: repeating-radial-gradient(circle, #17141c 0 2px, #221e29 2px 4px); box-shadow: 0 24px 50px rgba(20,18,24,.25); display: grid; place-items: center; animation: spin 6s linear infinite; animation-play-state: paused; }
 .vinyl.spinning { animation-play-state: running; }
 .vinyl-label { width: 62px; height: 62px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #9C82FF, var(--violet)); display: grid; place-items: center; }
 .vinyl-label svg { width: 22px; height: 22px; color: #fff; }
@@ -431,12 +431,6 @@ body.book-fs .bottomnav, body.book-fs .music-btn { opacity: 0; pointer-events: n
 .play-btn.playing .i-pause { display: block; } .play-btn.playing .i-play { display: none; }
 @media (hover: hover) { .play-btn:hover { background: var(--violet); transform: scale(1.06); } }
 .play-btn.no-audio, .music-btn.no-audio { opacity: .5; }
-.lyrics { max-width: 620px; margin: 0 auto; padding: 30px 22px; max-height: 520px; overflow-y: auto; text-align: center; overscroll-behavior: contain; scroll-behavior: smooth; background: var(--white); -webkit-mask-image: linear-gradient(transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(transparent, #000 7%, #000 93%, transparent); }
-.lyrics h4 { margin: 26px 0 8px; font-family: var(--sans); font-weight: 500; font-size: .64rem; letter-spacing: .32em; text-transform: uppercase; color: var(--violet); }
-.ly-block:first-child h4 { margin-top: 8px; }
-.lyrics p { margin: 0; font-family: var(--serif); font-size: 1.22rem; line-height: 1.6; color: var(--ink-2); }
-.lyrics .ly { transition: color .5s, transform .5s var(--ease); }
-.lyrics .ly.on { color: var(--violet); transform: scale(1.04); }
 
 /* =========================================================
    SECTION 11 — GALLERY
@@ -502,12 +496,7 @@ body.book-fs .bottomnav, body.book-fs .music-btn { opacity: 0; pointer-events: n
 /* =========================================================
    SECTION 14 — ASK
    ========================================================= */
-.ask { padding-bottom: calc(110px + var(--safe-b)); }
-.ask-lead { font-family: var(--serif); font-size: 1.35rem; font-style: italic; color: var(--ink-2); line-height: 1.5; margin: 0 0 22px; }
-.ask-form { padding: 16px; display: flex; flex-direction: column; gap: 14px; background: var(--white); }
-.ask-form textarea { width: 100%; min-height: 130px; resize: vertical; padding: 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font: 400 16px/1.5 var(--sans); transition: border-color .3s, box-shadow .3s; }
-.ask-form textarea:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 0 4px rgba(109,74,255,.12); }
-.footer { text-align: center; padding: 80px 20px 0; color: var(--muted); font-size: .86rem; }
+.footer { position: relative; z-index: 1; text-align: center; padding: 10px 20px calc(110px + var(--safe-b)); color: var(--muted); font-size: .86rem; }
 .footer p { margin: 12px 0 0; }
 .footer-star { display: inline-block; width: 18px; height: 18px; color: var(--violet); filter: drop-shadow(0 0 8px rgba(109,74,255,.7)); animation: twinkle 2.6s ease-in-out infinite; }
 .footer-star svg { width: 100%; height: 100%; }
@@ -572,9 +561,7 @@ body.book-fs .bottomnav, body.book-fs .music-btn { opacity: 0; pointer-events: n
   .verse-slider { padding: 56px 56px 26px; }
   .player { flex-direction: row; text-align: left; max-width: 760px; gap: 36px; padding: 34px; }
   .play-btn { margin-left: 0; }
-  .lyrics p { font-size: 1.3rem; }
-  .ask { padding-bottom: 60px; }
-}
+  }
 @media (min-width: 1200px) { .topnav a { padding: 10px 14px; } }
 
 /* =========================================================
